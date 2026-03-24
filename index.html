@@ -258,6 +258,42 @@
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
+<!-- Nav fixe -->
+<nav style="
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9997;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 32px 48px;
+  pointer-events: none;
+">
+  <span style="
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--black);
+    line-height: 1.8;
+    opacity: 0.6;
+  ">Yuna Bernard<br><em style="font-style:italic;font-size:11px;letter-spacing:0.18em;color:var(--gray-arch);">Architecture &amp; Design</em></span>
+  <a href="contact.html" style="
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gray-arch);
+    text-decoration: none;
+    transition: color 0.3s;
+    pointer-events: all;
+    cursor: none;
+    padding-top: 4px;
+  " onmouseover="this.style.color='var(--black)'" onmouseout="this.style.color='var(--gray-arch)'">Contact</a>
+</nav>
+
 <div class="scene">
 
   <!-- Clouds décoratives -->
@@ -301,7 +337,7 @@
     <!-- Row 1 -->
 
     <!-- Arch 1: Plante -->
-    <div class="arch has-silhouette">
+    <div class="arch has-silhouette" onclick="location.href='villa-bernard.html'" style="cursor:none;">
       <div class="arch-inner">
         <div class="arch-panes"></div>
         <div class="silhouette">
@@ -316,7 +352,7 @@
             <ellipse cx="50" cy="42" rx="12" ry="20" transform="rotate(-10 50 42)"/>
           </svg>
         </div>
-        <div class="arch-label">Botanique</div>
+        <div class="arch-label">Villa Bernard</div>
       </div>
     </div>
 
@@ -545,7 +581,7 @@
     </div>
 
     <!-- Arch 17: Chevalet / Peinture -->
-    <div class="arch has-silhouette" onclick="location.href='carnets-maquettes.html'" style="cursor:none;">
+    <div class="arch has-silhouette" onclick="location.href='villa-bernard.html'" style="cursor:none;">
       <div class="arch-inner">
         <div class="arch-panes"></div>
         <div class="silhouette">
@@ -558,12 +594,12 @@
             <line x1="25" y1="118" x2="50" y2="118" stroke="black" stroke-width="2"/>
           </svg>
         </div>
-        <div class="arch-label">Carnets &amp; Maquettes</div>
+        <div class="arch-label">Villa Bernard</div>
       </div>
     </div>
 
     <!-- Arch 18: Réunion / Collaboration -->
-    <div class="arch has-silhouette" onclick="location.href='villa-bernard.html'" style="cursor:none;">
+    <div class="arch has-silhouette" onclick="location.href='carnets-maquettes.html'" style="cursor:none;">
       <div class="arch-inner">
         <div class="arch-panes"></div>
         <div class="silhouette">
@@ -588,7 +624,7 @@
             <rect x="84" y="67" width="7" height="32" rx="2"/>
           </svg>
         </div>
-        <div class="arch-label">Villa Bernard</div>
+        <div class="arch-label">Carnets &amp; Maquettes</div>
       </div>
     </div>
 
