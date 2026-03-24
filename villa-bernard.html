@@ -169,14 +169,14 @@ nav {
 <div id="progress-bar"></div>
 
 <nav>
-  <div class="nav-brand">
+  <a class="nav-brand" href="index.html" style="text-decoration:none;">
     Yuna Bernard
     <em>Architecture &amp; Design</em>
-  </div>
+  </a>
   <ul class="nav-links">
     <li><a href="#section-zoom">Plan</a></li>
     <li><a href="#section-project">Projet</a></li>
-    <li><a href="#">Contact</a></li>
+    <li><a href="contact.html">Contact</a></li>
   </ul>
 </nav>
 
@@ -360,5 +360,52 @@ function init() {
 window.addEventListener('scroll', onScroll, { passive: true });
 window.addEventListener('resize', resize);
 </script>
+
+<style>
+.site-footer {
+  padding: 44px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(136,133,128,0.2);
+  background: var(--paper);
+}
+.site-footer-brand {
+  font-family: var(--serif);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+.site-footer-nav {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+.site-footer-nav a {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mid);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.site-footer-nav a:hover { color: var(--ink); }
+.site-footer-year {
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--mid);
+}
+</style>
+
+<footer class="site-footer">
+  <div class="site-footer-brand">Yuna Bernard — Architecture &amp; Design</div>
+  <ul class="site-footer-nav">
+    <li><a href="carnets-maquettes.html">← Projet précédent</a></li>
+    <li><a href="cave-a-vin.html">Projet suivant →</a></li>
+  </ul>
+  <div class="site-footer-year">2025 — 2026</div>
+</footer>
+
 </body>
 </html>
