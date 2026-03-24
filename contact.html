@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Yuna Bernard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blanc:   #f9f7f3;
+    --creme:   #ede8df;
+    --beige:   #b5a899;
+    --beige-f: #8a7d71;
+    --brun:    #6b5c4e;
+    --noir:    #2c2520;
+    --trait:   rgba(139,124,111,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--blanc);
+    color: var(--beige-f);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ——— NAV ——— */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 28px 52px;
+    background: var(--blanc);
+  }
+
+  .nav-brand .name {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--noir);
+    font-weight: 400;
+  }
+
+  .nav-brand .sub {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--beige);
+    margin-top: 2px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 44px;
+    list-style: none;
+    padding-top: 4px;
+  }
+
+  .nav-links a {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--beige);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--brun); }
+  .nav-links a.active { color: var(--noir); }
+
+  /* ——— MAIN ——— */
+  main {
+    flex: 1;
+    padding: 160px 52px 100px;
+    max-width: 700px;
+  }
+
+  .eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--beige);
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 36px;
+    height: 1px;
+    background: var(--beige);
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 5.5vw, 6rem);
+    font-weight: 300;
+    line-height: 1.0;
+    color: var(--noir);
+    letter-spacing: -0.01em;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--beige);
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--beige);
+    margin: 48px 0 40px;
+  }
+
+  .intro-text {
+    font-size: 0.88rem;
+    line-height: 2;
+    color: var(--beige-f);
+    max-width: 520px;
+    margin-bottom: 60px;
+  }
+
+  /* ——— CONTACT LINES ——— */
+  .contact-infos {
+    border-top: 1px solid var(--trait);
+  }
+
+  .contact-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--trait);
+    text-decoration: none;
+    gap: 20px;
+  }
+
+  a.contact-line:hover .contact-line-value { color: var(--brun); }
+  a.contact-line:hover .contact-line-arrow { transform: translateX(4px); color: var(--brun); }
+
+  .contact-line-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--beige);
+    min-width: 110px;
+  }
+
+  .contact-line-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    color: var(--noir);
+    transition: color 0.3s;
+    flex: 1;
+  }
+
+  .contact-line-arrow {
+    font-size: 0.75rem;
+    color: var(--beige);
+    transition: transform 0.3s, color 0.3s;
+  }
+
+  /* ——— FOOTER ——— */
+  footer {
+    padding: 44px 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--trait);
+    margin-top: auto;
+  }
+
+  .footer-brand {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--beige-f);
+  }
+
+  .footer-nav { display: flex; gap: 40px; list-style: none; }
+
+  .footer-nav a {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--beige);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .footer-nav a:hover { color: var(--brun); }
+
+  .footer-year {
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    color: var(--beige);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="name">Yuna Bernard</div>
+    <div class="sub">Architecture &amp; Design</div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#">Plan</a></li>
+    <li><a href="#">Projet</a></li>
+    <li><a href="#" class="active">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- MAIN -->
+<main>
+  <div class="eyebrow">Alternance — Architecture &amp; Design</div>
+  <h1>Disponible<br>pour une <em>alternance.</em></h1>
+  <div class="divider"></div>
+  <p class="intro-text">
+    Étudiante en architecture et design d'espace, je recherche une alternance à partir de septembre 2026. N'hésitez pas à me contacter directement.
+  </p>
+
+  <div class="contact-infos">
+    <a class="contact-line" href="mailto:Yuna.bernard42@gmail.com">
+      <span class="contact-line-label">Email</span>
+      <span class="contact-line-value">Yuna.bernard42@gmail.com</span>
+      <span class="contact-line-arrow">→</span>
+    </a>
+    <a class="contact-line" href="tel:+33783683151">
+      <span class="contact-line-label">Téléphone</span>
+      <span class="contact-line-value">07 83 68 31 51</span>
+      <span class="contact-line-arrow">→</span>
+    </a>
+    <a class="contact-line" href="https://www.linkedin.com/in/yuna-bernard" target="_blank">
+      <span class="contact-line-label">LinkedIn</span>
+      <span class="contact-line-value">yuna-bernard</span>
+      <span class="contact-line-arrow">→</span>
+    </a>
+    <div class="contact-line">
+      <span class="contact-line-label">Localisation</span>
+      <span class="contact-line-value">Orléans, France</span>
+      <span class="contact-line-arrow" style="opacity:0;">→</span>
+    </div>
+    <div class="contact-line">
+      <span class="contact-line-label">Disponibilité</span>
+      <span class="contact-line-value">Septembre 2026</span>
+      <span class="contact-line-arrow" style="opacity:0;">→</span>
+    </div>
+    <a class="contact-line" href="CV_Yuna_Bernard.pdf" download>
+      <span class="contact-line-label">Curriculum Vitae</span>
+      <span class="contact-line-value">Télécharger mon CV</span>
+      <span class="contact-line-arrow">↓</span>
+    </a>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Yuna Bernard — Architecture &amp; Design</div>
+  <ul class="footer
