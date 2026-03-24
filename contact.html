@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact — Yuna Bernard</title>
+<meta name="description" content="Contacter Yuna Bernard, étudiante en architecture et design d'espace, disponible en alternance à partir de septembre 2026.">
+<meta name="author" content="Yuna Bernard">
+<meta property="og:title" content="Contact — Yuna Bernard">
+<meta property="og:description" content="Étudiante en architecture et design d'espace, disponible en alternance à partir de septembre 2026.">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -32,7 +37,7 @@
     flex-direction: column;
   }
 
-  /* ——— NAV ——— */
+  /* NAV */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -43,6 +48,8 @@
     padding: 28px 52px;
     background: var(--blanc);
   }
+
+  a.nav-brand { text-decoration: none; }
 
   .nav-brand .name {
     font-size: 0.7rem;
@@ -79,7 +86,7 @@
   .nav-links a:hover { color: var(--brun); }
   .nav-links a.active { color: var(--noir); }
 
-  /* ——— MAIN ——— */
+  /* MAIN */
   main {
     flex: 1;
     padding: 160px 52px 100px;
@@ -133,7 +140,7 @@
     margin-bottom: 60px;
   }
 
-  /* ——— CONTACT LINES ——— */
+  /* CONTACT LINES */
   .contact-infos {
     border-top: 1px solid var(--trait);
   }
@@ -173,7 +180,7 @@
     transition: transform 0.3s, color 0.3s;
   }
 
-  /* ——— FOOTER ——— */
+  /* FOOTER */
   footer {
     padding: 44px 52px;
     display: flex;
@@ -214,14 +221,13 @@
 
 <!-- NAV -->
 <nav>
-  <div class="nav-brand">
+  <a class="nav-brand" href="index.html">
     <div class="name">Yuna Bernard</div>
     <div class="sub">Architecture &amp; Design</div>
-  </div>
+  </a>
   <ul class="nav-links">
-    <li><a href="#">Plan</a></li>
-    <li><a href="#">Projet</a></li>
-    <li><a href="#" class="active">Contact</a></li>
+    <li><a href="index.html">Projets</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
   </ul>
 </nav>
 
@@ -271,4 +277,11 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-brand">Yuna Bernard — Architecture &amp; Design</div>
-  <ul class="footer
+  <ul class="footer-nav">
+    <li><a href="index.html">← Retour aux projets</a></li>
+  </ul>
+  <div class="footer-year">2025 — 2026</div>
+</footer>
+
+</body>
+</html>
