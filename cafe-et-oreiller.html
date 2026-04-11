@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Café & Oreiller — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+ :root {
+    --blanc:   #f9f7f3;
+    --creme:   #ede8df;
+    --beige:   #9a8d81;
+    --beige-f: #4a3f36;
+    --brun:    #6b5c4e;
+    --noir:    #1e1a17;
+    --trait:   rgba(107,92,78,0.15);
+    --max-width: 1100px;
+    --padding-h: 52px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--blanc);
+    color: var(--brun-f);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page-section {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--padding-h);
+  }
+
+  /* ==============================
+     NAV
+  ============================== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    background: var(--blanc);
+    border-bottom: 1px solid var(--trait);
+  }
+
+  .nav-inner {
+    width: 100%;
+    padding: 28px var(--padding-h);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .nav-brand .name { font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--noir); font-weight:400; }
+  .nav-brand .sub  { font-size:.6rem; letter-spacing:.15em; text-transform:uppercase; color:var(--brun); margin-top:2px; }
+  .nav-links { display:flex; gap:44px; list-style:none; padding-top:4px; }
+  .nav-links a { font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--brun); text-decoration:none; transition:color .3s; }
+  .nav-links a:hover { color:var(--brun); }
+
+  /* ——— HERO ——— */
+  .hero {
+    padding: 160px 52px 80px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--brun);
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .hero-eyebrow::before,
+  .hero-eyebrow::after {
+    content: '';
+    width: 36px;
+    height: 1px;
+    background: var(--brun);
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 6.5vw, 7rem);
+    font-weight: 300;
+    line-height: 1.0;
+    color: var(--noir);
+    letter-spacing: -0.01em;
+    text-align: center;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--brun);
+  }
+
+  .hero-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--brun);
+    margin: 48px auto 40px;
+  }
+
+  .body-text {
+    font-size: 0.88rem;
+    line-height: 2;
+    color: var(--brun-f);
+    max-width: 640px;
+    margin: 0 auto 20px;
+    text-align: center;
+  }
+
+  /* ——— PLAN IMAGE (centré, section principale) ——— */
+  .plan-section {
+    padding: 60px 52px 0;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .plan-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--brun);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  .plan-label::before,
+  .plan-label::after {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: var(--brun);
+  }
+
+  .plan-img-wrapper {
+    width: 100%;
+    max-width: 860px;
+    margin: 0 auto;
+    margin-bottom: 28px;
+    overflow: hidden;
+    background: var(--creme);
+  }
+
+  .plan-img-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: brightness(0.96) saturate(0.75) sepia(0.04);
+    transition: transform 12s ease;
+  }
+
+  .plan-img-wrapper:hover img { transform: scale(1.02); }
+
+  .img-caption {
+    padding: 14px 0 0;
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--brun);
+    text-align: center;
+  }
+
+  /* ——— SECTION TEXT ——— */
+  .section {
+    padding: 90px 52px 0;
+    max-width: 900px;
+    margin: 0 auto;
+    margin-bottom: 56px;
+  }
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--noir);
+    margin-bottom: 36px;
+    text-align: center;
+  }
+
+  h2 em { 
+    font-style: italic; 
+    color: var(--brun); 
+  }
+
+  /* ——— PROGRAMME ——— */
+  .programme-wrapper {
+    padding: 0 52px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .programme {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--trait);
+    border: 1px solid var(--trait);
+  }
+
+  .prog-item {
+    background: var(--blanc);
+    padding: 48px 40px;
+    transition: background 0.4s;
+    text-align: center;
+  }
+
+  .prog-item:hover { background: var(--creme); }
+
+  .prog-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    color: var(--brun);
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+  }
+
+  .prog-item h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem;
+    font-weight: 400;
+    color: var(--noir);
+    margin-bottom: 8px;
+  }
+
+  .prog-surface {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--brun);
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--trait);
+  }
+
+  .prog-item p {
+    font-size: 0.8rem;
+    line-height: 1.85;
+    color: var(--brun-f);
+  }
+
+  /* ——— SECTION BAS : COUPES + CROQUIS ——— */
+  .bas-section {
+    padding: 0 52px 0;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .bas-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--brun);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  .bas-label::before,
+  .bas-label::after {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: var(--brun);
+  }
+
+  /* Ligne 1 : coupes centrées */
+  .coupes-row {
+    max-width: 860px;
+    margin: 0 auto 70px;
+  }
+
+  .coupe-img {
+    width: 100%;
+    overflow: hidden;
+    background: var(--creme);
+  }
+
+  .coupe-img img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: brightness(0.97) saturate(0.7) sepia(0.03);
+    transition: transform 10s ease;
+  }
+
+  .coupe-img:hover img { transform: scale(1.015); }
+
+  .coupe-caption {
+    padding: 12px 0 0;
+    font-size: 0.56rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--brun);
+    text-align: center;
+  }
+
+  /* Ligne 2 : croquis + descriptif côte à côte */
+  .croquis-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .croquis-img {
+    width: 100%;
+    overflow: hidden;
+    background: var(--creme);
+  }
+
+  .croquis-img img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: brightness(0.97) saturate(0.6) sepia(0.05);
+    transition: transform 10s ease;
+  }
+
+  .croquis-img:hover img { transform: scale(1.015); }
+
+  .croquis-desc {
+    text-align: center;
+  }
+
+  .croquis-desc h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--noir);
+    margin-bottom: 20px;
+  }
+
+  .croquis-desc h3 em {
+    font-style: italic;
+    color: var(--brun);
+  }
+
+  .croquis-desc p {
+    font-size: 0.82rem;
+    line-height: 2;
+    color: var(--brun-f);
+  }
+
+  /* ——— FOOTER ——— */
+  footer {
+    padding: 28px 52px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    border-top: 1px solid var(--trait);
+    margin-top: 90px;
+  }
+
+  .footer-year {
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    color: var(--brun);
+  }
+
+  /* ——— RESPONSIVE ——— */
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .hero { padding: 140px 24px 60px; }
+    .plan-section,
+    .bas-section,
+    .programme-wrapper { padding-left: 24px; padding-right: 24px; }
+    .section { padding: 60px 24px 50px; }
+    .programme { grid-template-columns: 1fr; }
+    .bas-grid { grid-template-columns: 1fr; gap: 60px; }
+    .croquis-row { grid-template-columns: 1fr; gap: 40px; }
+    .hero-eyebrow::before,
+    .hero-eyebrow::after { width: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==============================
+     NAV
+============================== -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html" style="text-decoration:none;">
+      <div class="name">Yuna Bernard</div>
+      <div class="sub">Architecture &amp; Design</div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Projets</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Un projet de vacances en Sardaigne</div>
+  <h1>Café<br>&amp; <em>Oreiller.</em></h1>
+  <div class="hero-divider"></div>
+  <p class="body-text">
+    Un bed &amp; breakfast imaginé sur les côtes de Sardaigne. À partir de ce lieu existant, l'intention a été de repenser l'espace en valorisant son rapport direct au paysage. Le projet s'inscrit dans la continuité de la topographie, en cherchant à révéler les vues, la lumière et la relation à la mer.
+
+L'architecture s'organise autour de cette situation singulière, entre minéral et horizon, en proposant des espaces ouverts, simples, pensés pour accueillir et prolonger l'expérience du lieu.
+  </p>
+  <p class="body-text">
+</div>
+
+<!-- PLAN VUE DE DESSUS -->
+<div class="plan-section">
+  <div class="plan-label">Plan vue de dessus </div>
+  <div class="plan-img-wrapper">
+    <img src="images\Café et oreillers\Plan vu de dessus.png" alt="Plan masse — Café & Oreiller, Sardaigne">
+  </div>
+</div>
+
+
+<!-- PROGRAMME (3 encadrés côte à côte) -->
+<div class="programme-wrapper">
+  <div class="programme">
+    <div class="prog-item">
+      <div class="prog-num">— 01</div>
+      <h3>Chambres</h3>
+      <div class="prog-surface">6 unités &nbsp;·&nbsp; double orientation</div>
+      <p>Les chambres, organisées en deux rangées symétriques de part et d'autre du patio, offrent une vue dégagée sur l'océan. Elles sont desservies par deux couloirs parallèles ouverts sur le patio par de grandes baies vitrées, créant une continuité visuelle et lumineuse au cœur du projet.</p>
+    </div>
+    <div class="prog-item">
+      <div class="prog-num">— 02</div>
+      <h3>Patio Central</h3>
+      <div class="prog-surface">Espace partagé &nbsp;·&nbsp; Coeur du projet</div>
+      <p>Cœur de vie du B&amp;B. Véritable cœur de vie du bed & breakfast, le patio s'impose comme un espace central de rencontre et de respiration.</p>
+    </div>
+    <div class="prog-item">
+      <div class="prog-num">— 03</div>
+      <h3>Espace Petit-Déjeuner</h3>
+      <div class="prog-surface">Volume distinct &nbsp;·&nbsp;</div>
+      <p>Ouvert sur le patio, il s'inscrit comme son prolongement naturel, prolongeant l'expérience extérieure dès les premiers moments de la journée, dans une atmosphère conviviale et lumineuse.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TEXT SECTION -->
+<div class="section">
+  <h2>Un patio comme<br><em>cœur</em> du séjour</h2>
+  <p class="body-text">
+    Le projet s'articule autour d'un patio central, ouvert sur le ciel, véritable cœur du lieu.
+
+Il structure la circulation et relie les différents espaces du bed & breakfast, tout en créant une respiration au sein de la bâtisse. Ce vide devient un point d'équilibre entre intérieur et extérieur, entre intimité et partage.
+
+Pensé comme un espace de rencontre, le patio accueille les moments de vie : échanges entre voyageurs, instants de pause, ou moments suspendus face à la lumière. Il incarne l'esprit du projet, un lieu où l'on vient autant pour habiter que pour se rencontrer.
+  </p>
+  <p class="body-text">
+  </p>
+</div>
+
+<!-- BAS DE PAGE : COUPES (ligne 1) + CROQUIS & DESCRIPTIF (ligne 2) -->
+<div class="bas-section">
+  <div class="bas-label">Coupes transversales </div>
+
+  <!-- Ligne 1 : coupes centrées -->
+  <div class="coupes-row">
+    <div class="coupe-img">
+      <img src="images\Café et oreillers\Coupes.png" alt="Coupes transversales — Café & Oreiller">
+    </div>
+    <div class="coupe-caption">Section AA — Patio  &amp; espace restauration &nbsp;·&nbsp; Section BB — Chambres &amp; patio central</div>
+  </div>
+
+  <!-- Ligne 2 : croquis à gauche, descriptif à droite -->
+  <div class="croquis-row">
+    <div class="croquis-img">
+      <img src="images\Café et oreillers\Croquis.png" alt="Croquis — Café & Oreiller">
+    </div>
+    <div class="croquis-desc">
+      <h3>Un dialogue entre <em>intérieur </em> et <em> extérieur </em></h3>
+      <p>
+        Ce croquis explore la relation entre le patio et la lumière intérieure du bâtiment. Il traduit l'ambiance recherchée : légèreté structurelle, lumière filtrée et dialogue permanent entre intérieur et extérieur.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-year">© <span id="year-range"></span>
+
+  <script>
+    const startYear = 2026;
+    const currentYear = new Date().getFullYear();
+    document.getElementById("year-range").textContent =
+      startYear === currentYear ? startYear : startYear + "-" + currentYear;
+  </script>
+</div>
+</footer>
+
+</body>
+</html>

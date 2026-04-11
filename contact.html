@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Yuna Bernard</title>
+<meta name="description" content="Contacter Yuna Bernard, étudiante en architecture et design d'espace, disponible en alternance à partir de septembre 2026.">
+<meta name="author" content="Yuna Bernard">
+<meta property="og:title" content="Contact — Yuna Bernard">
+<meta property="og:description" content="Étudiante en architecture et design d'espace, disponible en alternance à partir de septembre 2026.">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+ :root {
+    --blanc:   #f9f7f3;
+    --creme:   #ede8df;
+    --beige:   #9a8d81;
+    --beige-f: #4a3f36;
+    --brun:    #6b5c4e;
+    --noir:    #1e1a17;
+    --trait:   rgba(107,92,78,0.15);
+    --max-width: 1100px;
+    --padding-h: 52px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--blanc);
+    color: var(--brun-f);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page-section {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--padding-h);
+  }
+
+  /* ==============================
+     NAV
+  ============================== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    background: var(--blanc);
+    border-bottom: 1px solid var(--trait);
+  }
+
+  .nav-inner {
+    width: 100%;
+    padding: 28px var(--padding-h);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .nav-brand .name { font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--noir); font-weight:400; }
+  .nav-brand .sub  { font-size:.6rem; letter-spacing:.15em; text-transform:uppercase; color:var(--brun); margin-top:2px; }
+  .nav-links { display:flex; gap:44px; list-style:none; padding-top:4px; }
+  .nav-links a { font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--brun); text-decoration:none; transition:color .3s; }
+  .nav-links a:hover { color:var(--brun); }
+
+  /* MAIN — centré */
+  main {
+    flex: 1;
+    padding: 160px 52px 100px;
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--brun);
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 36px;
+    height: 1px;
+    background: var(--brun);
+    flex-shrink: 0;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 5.5vw, 6rem);
+    font-weight: 300;
+    line-height: 1.0;
+    color: var(--noir);
+    letter-spacing: -0.01em;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--brun);
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--brun);
+    margin: 48px 0 40px;
+  }
+
+  .intro-text {
+    font-size: 0.88rem;
+    line-height: 2;
+    color: var(--brun-f);
+    max-width: 520px;
+    margin-bottom: 60px;
+  }
+
+  /* CONTACT LINES */
+  .contact-infos {
+    border-top: 1px solid var(--trait);
+  }
+
+  .contact-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--trait);
+    text-decoration: none;
+    gap: 20px;
+    transition: background 0.2s;
+  }
+
+  a.contact-line:hover .contact-line-value {
+    color: var(--brun);
+  }
+
+  a.contact-line:hover .contact-line-arrow {
+    transform: translateX(5px);
+    color: var(--brun);
+  }
+
+  a.contact-line:hover .contact-line-arrow.down {
+    transform: translateY(4px);
+    color: var(--brun);
+  }
+
+  .contact-line-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--brun);
+    min-width: 130px;
+    font-weight: 400;
+  }
+
+  .contact-line-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: var(--noir);
+    transition: color 0.3s;
+    flex: 1;
+    font-weight: 400;
+  }
+
+  .contact-line-arrow {
+    font-size: 0.8rem;
+    color: var(--brun);
+    transition: transform 0.3s, color 0.3s;
+    flex-shrink: 0;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 28px 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--trait);
+    margin-top: auto;
+  }
+
+  .footer-brand {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--brun-f);
+  }
+
+  .footer-nav { display: flex; gap: 40px; list-style: none; }
+
+  .footer-nav a {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--brun);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .footer-nav a:hover { color: var(--brun); }
+
+  .footer-year {
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    color: var(--brun);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    nav { padding: 22px 24px; }
+    main { padding: 130px 24px 80px; }
+    footer { padding: 32px 24px; flex-wrap: wrap; gap: 16px; }
+    .contact-line-label { min-width: 90px; font-size: 0.5rem; }
+    .contact-line-value { font-size: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==============================
+     NAV
+============================== -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html" style="text-decoration:none;">
+      <div class="name">Yuna Bernard</div>
+      <div class="sub">Architecture &amp; Design</div>
+    </a>
+    <!--<ul class="nav-links">
+      <li><a href="index.html">Projets</a></li>
+    </ul>-->
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main>
+  <div class="eyebrow">Alternance — Architecture d'intérieur &amp; Design</div>
+  <h1>Disponible<br>pour une <em>alternance.</em></h1>
+  <div class="divider"></div>
+  <p class="intro-text">
+    Forte d'une sensibilité pour l'espace, la lumière et les ambiances, je recherche une alternance en architecture et design d'espace à partir d'octobre 2026.
+  </p>
+
+  <div class="contact-infos">
+
+    <a class="contact-line" href="mailto:yuna.bernard42@gmail.com">
+      <span class="contact-line-label">Email</span>
+      <span class="contact-line-value">yuna.bernard42@gmail.com</span>
+      <span class="contact-line-arrow">→</span>
+    </a>
+
+    <a class="contact-line" href="tel:+33783683151">
+      <span class="contact-line-label">Téléphone</span>
+      <span class="contact-line-value">07 83 68 31 51</span>
+      <span class="contact-line-arrow">→</span>
+    </a>
+
+    <a class="contact-line" href="https://www.linkedin.com/in/yuna-bernard" target="_blank" rel="noopener noreferrer">
+      <span class="contact-line-label">LinkedIn</span>
+      <span class="contact-line-value">yuna-bernard</span>
+      <span class="contact-line-arrow">→</span>
+    </a>
+
+    <div class="contact-line">
+      <span class="contact-line-label">Localisation</span>
+      <span class="contact-line-value">Rouen, France</span>
+      <span class="contact-line-arrow" style="opacity:0;">→</span>
+    </div>
+
+    <div class="contact-line">
+      <span class="contact-line-label">Disponibilité</span>
+      <span class="contact-line-value">Octobre 2026</span>
+      <span class="contact-line-arrow" style="opacity:0;">→</span>
+    </div>
+
+    <a class="contact-line" href="assets\CV_Yuna_Bernard.pdf" target="_blank" rel="noopener noreferrer" download="CV_Yuna_Bernard.pdf">
+      <span class="contact-line-label">Curriculum Vitae</span>
+      <span class="contact-line-value">Télécharger mon CV</span>
+      <span class="contact-line-arrow down">↓</span>
+    </a>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-nav"><a href="index.html">← Retour aux projets</a></div>
+  <div class="footer-year">© <span id="year-range"></span>
+
+  <script>
+    const startYear = 2026;
+    const currentYear = new Date().getFullYear();
+    document.getElementById("year-range").textContent =
+      startYear === currentYear ? startYear : startYear + "-" + currentYear;
+  </script>
+</div>
+
+</footer>
+
+</body>
+</html>

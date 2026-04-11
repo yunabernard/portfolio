@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio Yuna Bernard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Cinzel:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --white: #ffffff;
+    --gray-arch: #b8b5b0;
+    --black: #1a1a1a;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--white);
+    font-family: 'Cormorant Garamond', serif;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--black);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--black);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    opacity: 0.5;
+    transition: width 0.3s, height 0.3s, opacity 0.3s;
+  }
+  /* Curseur agrandi sur les zones cliquables */
+  body.hovering .cursor      { width: 6px; height: 6px; }
+  body.hovering .cursor-ring { width: 56px; height: 56px; opacity: 0.25; }
+
+  /* Scène : toute la fenêtre */
+  .scene {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+  }
+
+  .scene img#bgImg {
+    display: block;
+    height: 100vh;
+    width: auto;
+    max-width: 100vw;
+    max-height: 100vh;
+    object-fit: contain;
+  }
+
+  /* Overlay calé par JS sur l'image */
+  .img-overlay {
+    position: fixed;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* ── Nav ── */
+  .overlay-nav {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 2% 0%;
+  }
+  .nav-name {
+    font-size: clamp(9px, 1.1vw, 14px);
+    font-weight: 300;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--black);
+    line-height: 1.8;
+    opacity: 0.6;
+  }
+  .nav-name em {
+    font-style: italic;
+    font-size: 0.85em;
+    letter-spacing: 0.18em;
+    color: var(--gray-arch);
+    display: block;
+  }
+  .nav-contact {
+    font-size: clamp(8px, 0.95vw, 12px);
+    font-weight: 300;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gray-arch);
+    text-decoration: none;
+    transition: color 0.3s;
+    pointer-events: all;
+    cursor: none;
+    padding-top: 4px;
+  }
+  .nav-contact:hover { color: var(--black); }
+
+  /* ── Titre animé en continu ── */
+  .portfolio-title {
+    position: absolute;
+    bottom: 2%;
+    left: 0; right: 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(10px, 2vw, 30px);
+    font-weight: 300;
+    letter-spacing: 0.35em;
+    color: var(--black);
+    text-align: center;
+    /* Animation continue : légère respiration + shimmer */
+    animation: titleBreathe 3s ease-in-out infinite;
+  }
+
+  @keyframes titleBreathe {
+    0%   { opacity: 0.55; transform: translateY(0px);   letter-spacing: 0.35em; }
+    50%  { opacity: 1;    transform: translateY(-4px);  letter-spacing: 0.42em; }
+    100% { opacity: 0.55; transform: translateY(0px);   letter-spacing: 0.35em; }
+  }
+
+  /* ── Images cliquables ── */
+  .hotspot {
+    position: absolute;
+    pointer-events: all;
+    cursor: none;
+    /* Coins légèrement arrondis */
+    border-radius: 2px;
+    transition: box-shadow 0.4s ease;
+  }
+
+  .hotspot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transform: scale(1);
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                filter 0.5s ease;
+    filter: brightness(0.92);
+  }
+
+  .hotspot:hover img {
+    transform: scale(1.1);
+    filter: brightness(1);
+  }
+
+
+  /* Positions des 4 hotspots (% par rapport à l'overlay = par rapport à l'image)
+     Ajuste left/top/transform-translate pour centrer le point d'ancrage */
+
+  /* Haut gauche */
+  .hs-1 {
+    left: 4%;
+    top: 17%;
+    width: 20%;
+  }
+  /* Haut droit */
+  .hs-2 {
+    right: 8%;
+    top: 17.5%;
+    width: 20%;
+  }
+  /* Milieu gauche */
+  .hs-3 {
+    left: 32%;
+    top: 45%;
+    width: 23%;
+  }
+  /* Bas légèrement à droite */
+  .hs-4 {
+    left: 59%;
+    bottom: 8.5%;
+    width: 19%;
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="scene">
+  <img id="bgImg" src="images/Index/Page de garde.png" alt="Page de garde">
+</div>
+
+<div class="img-overlay" id="imgOverlay">
+
+  <!-- Nav -->
+  <nav class="overlay-nav">
+    <span class="nav-name">
+      Yuna Bernard<br>
+      <em>Architecture &amp; Design</em>
+    </span>
+    <a href="contact.html" class="nav-contact">Contact</a>
+  </nav>
+
+  <!-- Titre animé -->
+  <h1 class="portfolio-title">Portfolio Yuna Bernard</h1>
+
+  <!-- 4 images cliquables -->
+  <a href="nouvelle-lecture-de-l-habiter.html" class="hotspot hs-1">
+    <img src="images/Index/Nouvelle lecture de l'habiter.webp" alt="Nouvelle lecture de l'habiter">
+  </a>
+
+  <a href="cafe-et-oreiller.html" class="hotspot hs-2">
+    <img src="images/Index/Café et Oreiller.webp" alt="Café et Oreiller">
+  </a>
+
+  <a href="cave-a-vin.html" class="hotspot hs-3">
+    <img src="images/Index/Cave à vin.webp" alt="Cave à vin">
+  </a>
+
+  <a href="carnets-maquettes.html" class="hotspot hs-4">
+    <img src="images/Index/Carnets et maquettes.webp" alt="Carnets et maquettes">
+  </a>
+
+</div>
+
+<script>
+  /* --- Cursor --- */
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+  // Agrandit le curseur au survol des hotspots
+  document.querySelectorAll('.hotspot, .nav-contact').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+  });
+
+  (function animateCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  })();
+
+  /* --- Calage overlay sur l'image --- */
+  const img     = document.getElementById('bgImg');
+  const overlay = document.getElementById('imgOverlay');
+
+  function fitOverlay() {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const natW = img.naturalWidth  || 1;
+    const natH = img.naturalHeight || 1;
+    const ratio = natW / natH;
+
+    let rendH = vh;
+    let rendW = rendH * ratio;
+    if (rendW > vw) { rendW = vw; rendH = rendW / ratio; }
+
+    const left = (vw - rendW) / 2;
+    const top  = (vh - rendH) / 2;
+
+    overlay.style.left   = left  + 'px';
+    overlay.style.top    = top   + 'px';
+    overlay.style.width  = rendW + 'px';
+    overlay.style.height = rendH + 'px';
+  }
+
+  if (img.complete && img.naturalWidth) { fitOverlay(); }
+  else { img.addEventListener('load', fitOverlay); }
+  window.addEventListener('resize', fitOverlay);
+</script>
+</body>
+</html>

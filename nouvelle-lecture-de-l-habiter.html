@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nouvelle lecture de l'habiter — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<!-- Force le retour en haut avant toute restauration de scroll par le navigateur -->
+<script>history.scrollRestoration = 'manual'; window.scrollTo(0, 0);</script>
+<style>
+  :root {
+    --blanc:   #f9f7f3;
+    --creme:   #ede8df;
+    --beige:   #9a8d81;
+    --beige-f: #4a3f36;
+    --brun:    #6b5c4e;
+    --noir:    #1e1a17;
+    --trait:   rgba(107,92,78,0.15);
+    --max-width: 1100px;
+    --padding-h: 52px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--blanc);
+    color: var(--brun-f);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    /* Scrollbar toujours présente dès le chargement = pas de décalage */
+    overflow-y: scroll;
+  }
+
+  /* ============================================
+     SECTION INTRO — sticky scroll-driven
+     Principe : #intro-spacer crée la hauteur de scroll,
+     #intro-sticky colle en haut et se met à jour via JS.
+  ============================================ */
+
+  /* Le spacer est dans le flux normal — sa hauteur est définie en JS */
+  #intro-spacer {
+    position: relative;
+  }
+
+  /* Le panneau sticky colle en haut pendant tout le scroll du spacer */
+  #intro-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-top: 85px;   /* laisse la nav visible au-dessus */
+    background: var(--blanc);
+    overflow: hidden;
+    z-index: 150;        /* sous la nav (z-index 200) */
+  }
+
+  /* Zone image — flex:1 pour remplir l'espace entre nav et barre basse */
+  #intro-img-wrap {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  #intro-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transform-origin: center center;
+    will-change: transform;
+    filter: brightness(0.88) saturate(0.65);
+  }
+
+  /* Barre basse avec bordure */
+  #intro-bar {
+    flex-shrink: 0;
+    height: 44px;
+    border-top: 1px solid var(--trait);
+    display: flex;
+    align-items: center;
+    padding: 0 var(--padding-h);
+    background: var(--blanc);
+    position: relative;
+  }
+
+  /* Échelle bas-gauche */
+  #intro-scale {
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    color: var(--brun);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+  }
+
+  /* "Défiler pour explorer" centré dans la barre */
+  #intro-bar-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  #intro-bar-center span {
+    font-size: 0.55rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--brun);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+  }
+
+  #intro-bar-center .chevron {
+    width: 7px;
+    height: 7px;
+    border-right: 1px solid var(--brun);
+    border-bottom: 1px solid var(--brun);
+    transform: rotate(45deg);
+    animation: bounce-hint 1.8s ease-in-out infinite;
+  }
+
+  @keyframes bounce-hint {
+    0%, 100% { transform: rotate(45deg) translateY(0);   opacity: 0.5; }
+    50%       { transform: rotate(45deg) translateY(3px); opacity: 1;   }
+  }
+
+  /* ——— NAV ——— */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    background: var(--blanc);
+    border-bottom: 1px solid var(--trait);
+  }
+
+  .nav-inner {
+    width: 100%;
+    padding: 28px var(--padding-h);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .nav-brand .name { font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--noir); font-weight:400; }
+  .nav-brand .sub  { font-size:.6rem; letter-spacing:.15em; text-transform:uppercase; color:var(--brun); margin-top:2px; }
+  .nav-links { display:flex; gap:44px; list-style:none; padding-top:4px; }
+  .nav-links a { font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--brun); text-decoration:none; transition:color .3s; }
+  .nav-links a:hover { color:var(--brun); }
+
+  /* ——— HERO ——— */
+  .hero {
+    padding: 0px 52px 80px;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--brun);
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .hero-eyebrow::before,
+  .hero-eyebrow::after {
+    content: '';
+    width: 36px;
+    height: 1px;
+    background: var(--brun);
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 6.5vw, 7rem);
+    font-weight: 300;
+    line-height: 1.0;
+    color: var(--noir);
+    letter-spacing: -0.01em;
+    text-align: center;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--brun);
+  }
+
+  .hero-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--brun);
+    margin: 48px auto 40px;
+  }
+
+  .body-text {
+    font-size: 0.88rem;
+    line-height: 2;
+    color: var(--brun-f);
+    max-width: 640px;
+    margin: 0 auto 20px;
+    text-align: center;
+  }
+
+/* ==============================
+     PLAN INTERACTIF
+  ============================== */
+  .interactive-block {
+    margin: 0 auto;
+    padding: 93px 52px 80px;
+  }
+
+  .plan-interactive {
+    position: relative;
+    line-height: 0;
+  }
+  .plan-interactive > img {
+    width:100%; height:auto; display:block;
+    filter:brightness(.97) saturate(.75) sepia(.03);
+  }
+
+  /* Hotspots */
+  .hs {
+    position:absolute;
+    cursor:pointer;
+    border:1.5px solid transparent;
+    border-radius:2px;
+    transition:background .25s, border-color .25s;
+  }
+  .hs:hover {
+    background:rgba(107,92,78,.13);
+    border-color:rgba(107,92,78,.55);
+  }
+
+  /* Tooltip avec image */
+  .hs-tooltip {
+    position:absolute;
+    background:var(--blanc);
+    border:1px solid var(--trait);
+    box-shadow:0 6px 30px rgba(44,37,32,.1);
+    pointer-events:none;
+    opacity:0;
+    transition:opacity .2s;
+    z-index:50;
+    width:240px;
+  }
+  .hs-tooltip.visible { opacity:1; }
+  .hs-tooltip .tt-body { padding:10px 10px; }
+  .tt-nom { font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:400; color:var(--noir); margin-bottom:10px; line-height:1; }
+
+  /* ── Curseur pointer sur les hotspots pour signaler le clic ── */
+  .hs { cursor: pointer; }
+
+  /* ==============================
+     POPUP / MODAL
+  ============================== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(30,26,23,0.55);
+    backdrop-filter: blur(3px);
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .modal {
+    background: var(--blanc);
+    border: 1px solid var(--trait);
+    box-shadow: 0 20px 60px rgba(30,26,23,0.22);
+    width: min(960px, 92vw);
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    transform: translateY(18px);
+    transition: transform 0.3s ease;
+  }
+  .modal-overlay.open .modal {
+    transform: translateY(0);
+  }
+
+  /* Image : pas de rognage, taille naturelle */
+  .modal-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: brightness(0.92) saturate(0.72) sepia(0.03);
+  }
+  .modal-img-placeholder {
+    width: 100%;
+    padding: 60px 0;
+    background: var(--creme);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-img-placeholder span {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--beige);
+  }
+
+  /* Bande de titre compacte sous l'image */
+  .modal-body {
+    padding: 22px 32px 26px;
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    border-top: 1px solid var(--trait);
+  }
+
+  .modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.7rem;
+    font-weight: 300;
+    color: var(--noir);
+    line-height: 1;
+  }
+
+  .modal-surface {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--brun);
+  }
+
+  /* Bouton fermer */
+  .modal-close {
+    position: absolute;
+    top: 14px; right: 16px;
+    background: rgba(30,26,23,0.45);
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--blanc);
+    line-height: 1;
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    opacity: 0.85;
+    transition: opacity 0.2s, background 0.2s;
+    z-index: 10;
+  }
+  .modal-close:hover { opacity: 1; background: rgba(30,26,23,0.7); }
+
+  /* ——— SECTION TEXT ——— */
+  .section {
+    padding: 90px 52px 70px;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--noir);
+    margin-bottom: 36px;
+    text-align: center;
+  }
+
+  h2 em { font-style: italic; color: var(--brun); }
+
+  /* ——— PROGRAMME ——— */
+  .programme {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--trait);
+    border: 1px solid var(--trait);
+    margin: 0 52px 90px;
+  }
+
+  .prog-item {
+    background: var(--blanc);
+    padding: 48px 40px;
+    transition: background 0.4s;
+    text-align: center;
+  }
+
+  .prog-item:hover { background: var(--creme); }
+
+  .prog-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    color: var(--brun);
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+  }
+
+  .prog-item h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem;
+    font-weight: 400;
+    color: var(--noir);
+    margin-bottom: 8px;
+  }
+
+  .prog-surface {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--brun);
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--trait);
+  }
+
+  .prog-item p {
+    font-size: 0.8rem;
+    line-height: 1.85;
+    color: var(--brun-f);
+  }
+
+  /* ——— GALLERY ——— */
+  .gallery {
+    padding: 0 52px 100px;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 3px;
+    height: 680px;
+  }
+
+  .g-item {
+    overflow: hidden;
+    position: relative;
+    background: #d6cfc5;
+  }
+
+  .g-item.tall {
+    grid-row: 1 / 3;
+    background: #c9bfb3;
+  }
+
+  .g-item:nth-child(2) { background: #ddd7cf; }
+  .g-item:nth-child(3) { background: #cec6bc; }
+
+  .g-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.88) saturate(0.55) sepia(0.10);
+    transition: transform 0.8s ease, filter 0.5s ease;
+    display: block;
+  }
+
+  .g-item:hover img {
+    transform: scale(1.04);
+    filter: brightness(0.93) saturate(0.72) sepia(0.06);
+  }
+
+  .g-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 20px 24px;
+    background: linear-gradient(to top, rgba(90,78,68,0.55), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+    text-align: center;
+  }
+
+  .g-item:hover .g-caption { opacity: 1; }
+
+  .g-caption span {
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(249,247,243,0.9);
+  }
+
+  /* ——— FOOTER ——— */
+  footer {
+    padding: 28px 52px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    border-top: 1px solid var(--trait);
+  }
+
+  .footer-year {
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    color: var(--brun);
+  }
+
+  /* ==============================
+     RESPONSIVE — tablette & mobile
+  ============================== */
+  @media (max-width: 900px) {
+    :root { --padding-h: 28px; }
+  }
+
+  @media (max-width: 560px) {
+    :root { --padding-h: 20px; }
+    .nav-links { gap: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================
+     SECTION INTRO — dans le flux de la page
+     L'animation est pilotée par scrollY natif
+============================================ -->
+<div id="intro-spacer">
+  <div id="intro-sticky">
+    <div id="intro-img-wrap">
+      <img src="images\Nouvelle lecture de l'habiter\Plan masse.webp" alt="">
+    </div>
+    <div id="intro-bar">
+      <div id="intro-scale">1/200</div>
+      <div id="intro-bar-center">
+        <span>Défiler pour explorer</span>
+        <div class="chevron"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html" style="text-decoration:none;">
+      <div class="name">Yuna Bernard</div>
+      <div class="sub">Architecture &amp; Design</div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Projets</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ==============================
+     PLAN INTERACTIF
+============================== -->
+<div class="interactive-block">
+  <div class="plan-interactive" id="planWrap">
+    <img src="images\Nouvelle lecture de l'habiter\Plan vue de dessus.webp">
+
+    <!-- Cuisine -->
+    <div class="hs" style="left:27.5%;top:2.5%;width:38.7%;height:41%;"
+      data-nom="Cuisine — cliquer pour en savoir plus"
+      data-id="cuisine"></div>
+
+    <!-- Salle de bain -->
+    <div class="hs" style="left:66%;top:2.5%;width:12.5%;height:41%;"
+      data-nom="Salle de bain"
+      data-id="sdb"></div>
+
+    <!-- Escalier -->
+    <div class="hs" style="left:1.2%;top:43.2%;width:26.5%;height:54.1%;"
+      data-nom="Escalier"
+      data-id="escalier"></div>
+
+    <!-- Chambre -->
+    <div class="hs" style="left:78.3%;top:2.5%;width:20.2%;height:41%;"
+      data-nom="Chambre"
+      data-id="chambre"></div>
+
+    <!-- Entree -->
+    <div class="hs" style="left:56.1%;top:43.2%;width:13%;height:47.6%;"
+      data-nom="Entrée"
+      data-id="entree"></div>
+
+    <!-- TOOLTIP -->
+    <div class="hs-tooltip" id="hsTooltip">
+      <div class="tt-body">
+        <div class="tt-nom" id="ttNom"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Intervention sur un espace existant — Etude client</div>
+  <h1>Nouvelle lecture <br>de<em> l’habiter</em></h1>
+  <div class="hero-divider"></div>
+  <p class="body-text">
+    Projet de revalorisation d’une maison ancienne, où la lumière devient un élément central. L’intervention cherche à instaurer une lumière traversante, transformant des espaces autrefois sombres en lieux ouverts, lumineux et vivants.
+  </p>
+  <p class="body-text">
+    L’aménagement a été retravaillé pour fluidifier les circulations et clarifier les usages, apportant à la maison une lecture plus contemporaine et architecturée.
+</div>
+
+<!-- ==============================
+     POPUP MODAL
+============================== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" id="modalClose" aria-label="Fermer">✕</button>
+    <div id="modalImgWrap"></div>
+    <div class="modal-body">
+      <div class="modal-title"   id="modalTitle"></div>
+      <div class="modal-surface" id="modalSurface"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-year">© <span id="year-range"></span>
+
+  <script>
+    const startYear = 2026;
+    const currentYear = new Date().getFullYear();
+    document.getElementById("year-range").textContent =
+      startYear === currentYear ? startYear : startYear + "-" + currentYear;
+  </script>
+</div>
+</footer>
+
+
+<!-- ============================================
+     SCRIPT — Intro : animation RAF, scroll page bloqué
+     Le wheel déclenche une animation autonome (RAF).
+     La page ne scroll PAS pendant l'intro — position
+     forcée à 0 à chaque frame tant que l'overlay est actif.
+     Molette vers le haut en haut de page = animation inverse.
+============================================ -->
+<script>
+(function () {
+  const spacer    = document.getElementById('intro-spacer');
+  const sticky    = document.getElementById('intro-sticky');
+  const introImg  = sticky.querySelector('img');
+  const scaleEl   = document.getElementById('intro-scale');
+  const barCenter = document.getElementById('intro-bar-center');
+
+  // ── Paramètres ────────────────────────────────────────────────
+  const DURATION    = 3800;  // ms — durée totale de l'animation
+  const DURATION_REV = 2200; // ms — durée de l'animation inverse (plus rapide)
+  const ZOOM_MAX    = 1.65;
+  const SCALE_START = 200;
+  const SCALE_END   = 50;
+  const FADE_FROM   = 0.65; // le fade commence à ce ratio
+
+  // Décalage final de l'image (en % relatif à sa taille)
+  const OFFSET_X  =  3;
+  const OFFSET_Y  =  10.5;
+
+  // Rotation finale de l'image (en degrés)
+  const ROTATION  =  1.55;
+
+  let animating   = false;
+  let startTime   = null;
+  let introGone   = false; // l'intro a été retirée du DOM
+
+  // ── Utilitaires ───────────────────────────────────────────────
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function ease(t) {
+    return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+  }
+
+  // ── Bloque le scroll natif de la page ─────────────────────────
+  function preventScroll(e) { e.preventDefault(); }
+  function lockTop() {
+    if (animating) {
+      window.scrollTo(0, 0);
+      requestAnimationFrame(lockTop);
+    }
+  }
+
+  // ── Applique le visuel pour un ratio donné (0 = début, 1 = fin) ──
+  function applyRatio(e) {
+    const scale  = lerp(1, ZOOM_MAX, e);
+    const tx     = lerp(0, OFFSET_X, e);
+    const ty     = lerp(0, OFFSET_Y, e);
+    const rotate = lerp(0, ROTATION, e);
+    introImg.style.transform =
+      'scale(' + scale + ') ' +
+      'translate(' + tx + '%, ' + ty + '%) ' +
+      'rotate(' + rotate + 'deg)';
+    scaleEl.textContent = '1/' + Math.round(lerp(SCALE_START, SCALE_END, e));
+    const opacity = e < FADE_FROM ? 1 : 1 - (e - FADE_FROM) / (1 - FADE_FROM);
+    sticky.style.opacity = opacity;
+  }
+
+  // ════════════════════════════════════════════════
+  // ANIMATION AVANT (zoom out → disparition)
+  // ════════════════════════════════════════════════
+  function animate(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const ratio = Math.min((timestamp - startTime) / DURATION, 1);
+    applyRatio(ease(ratio));
+
+    if (ratio < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      // Fin : retire l'intro du DOM
+      window.removeEventListener('wheel',     preventScroll);
+      window.removeEventListener('touchmove', preventScroll);
+      window.scrollTo(0, 0);
+      animating = false;
+      introGone = true;
+      if (spacer) spacer.remove();
+      // Écoute molette vers le haut en haut de page
+      window.addEventListener('wheel', watchScrollUp, { passive: false });
+    }
+  }
+
+  // ── Déclenche l'animation avant ──────────────────────────────
+  function triggerForward(e) {
+    if (animating) return;
+    if (e && e.type === 'wheel' && e.deltaY <= 0) return;
+    if (e && e.type === 'keydown' && !([' ','ArrowDown','PageDown'].includes(e.key))) return;
+
+    animating = true;
+    startTime = null;
+    barCenter.style.opacity = '0';
+    barCenter.style.transition = 'opacity 0.3s ease';
+
+    window.removeEventListener('wheel',   triggerForward);
+    window.removeEventListener('keydown', triggerForward);
+
+    window.addEventListener('wheel',     preventScroll, { passive: false });
+    window.addEventListener('touchmove', preventScroll, { passive: false });
+    requestAnimationFrame(lockTop);
+    requestAnimationFrame(animate);
+  }
+
+  // ════════════════════════════════════════════════
+  // ANIMATION INVERSE (zoom in → réapparition)
+  // ════════════════════════════════════════════════
+  function animateReverse(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const ratio = Math.min((timestamp - startTime) / DURATION_REV, 1);
+    // ratio 0 = fin de l'anim forward (tout zoomé, opacity 0)
+    // ratio 1 = début (scale 1, opacity 1, transform neutre)
+    applyRatio(ease(1 - ratio));
+
+    if (ratio < 1) {
+      requestAnimationFrame(animateReverse);
+    } else {
+      // Fin : intro entièrement réaffichée
+      window.removeEventListener('wheel',     preventScroll);
+      window.removeEventListener('touchmove', preventScroll);
+      animating = false;
+      introGone = false;
+      // Réafficher le hint
+      barCenter.style.opacity = '1';
+      // Réarmer les listeners pour le prochain forward
+      window.addEventListener('wheel',   triggerForward, { passive: true });
+      window.addEventListener('keydown', triggerForward);
+    }
+  }
+
+  // ── Surveille un scroll vers le haut en haut de page ──────────
+  function watchScrollUp(e) {
+    if (animating) return;
+    if (introGone && window.scrollY === 0 && e.deltaY < 0) {
+      e.preventDefault();
+
+      // Bloquer le scroll et marquer animating AVANT toute insertion DOM
+      animating = true;
+      window.removeEventListener('wheel', watchScrollUp);
+      window.addEventListener('wheel',     preventScroll, { passive: false });
+      window.addEventListener('touchmove', preventScroll, { passive: false });
+
+      // Forcer la position à 0 avant de réinsérer (évite le micro-scroll du reflow)
+      window.scrollTo(0, 0);
+
+      // Remettre l'intro dans le DOM
+      document.body.insertBefore(spacer, document.body.firstChild);
+
+      // Forcer à nouveau à 0 après l'insertion
+      window.scrollTo(0, 0);
+
+      // Reset visuel à l'état "fin de l'anim forward" avant de repartir en arrière
+      applyRatio(1);
+      sticky.style.display = '';
+      introGone = false;
+
+      startTime = null;
+      requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+        requestAnimationFrame(lockTop);
+        requestAnimationFrame(animateReverse);
+      });
+    }
+  }
+
+  // ── Init : bloque le scroll initial et attend le premier wheel ─
+  window.addEventListener('wheel',    preventScroll, { passive: false });
+  window.addEventListener('touchmove', preventScroll, { passive: false });
+  requestAnimationFrame(lockTop);
+  window.addEventListener('wheel',   triggerForward, { passive: true });
+  window.addEventListener('keydown', triggerForward);
+
+})();
+
+  /* ======================================================
+     POPUPS — CONTENU PAR ZONE
+     Modifie chaque objet ci-dessous pour personnaliser
+     ta popup. La clé doit correspondre au data-id du .hs.
+     ======================================================
+
+     Champs disponibles :
+       eyebrow  — petite ligne au-dessus du titre (ex: "Rez-de-chaussée")
+       titre    — nom de la pièce (affiché en grand)
+       surface  — surface en m² (optionnel, laisser "" pour cacher)
+       desc     — texte de description
+       image    — chemin vers l'image (optionnel, laisser "" pour pas d'image)
+
+  ====================================================== */
+  const POPUPS = {
+
+    cuisine: {
+      eyebrow : "Rez-de-chaussée",
+      titre   : "Cuisine",
+      surface : "24 m²",
+      desc    : "Espace ouvert sur le séjour, pensé pour la convivialité. Plan de travail en pierre naturelle, rangements intégrés du sol au plafond.",
+      image   : "images/Nouvelle lecture de l'habiter/Elevation cuisine.webp" // ex: "images/Nouvelle lecture de l'habiter/cuisine.webp"
+    },
+
+    sdb: {
+      eyebrow : "Rez-de-chaussée",
+      titre   : "Salle de bain",
+      surface : "8 m²",
+      desc    : "Salle d'eau épurée avec douche à l'italienne. Matériaux sobres : béton ciré au sol, faïence blanche mate en habillage.",
+      image   : "images/Nouvelle lecture de l'habiter/Elevation SDB.png"
+    },
+
+    escalier: {
+      eyebrow : "Circulation verticale",
+      titre   : "Escalier",
+      surface : "",
+      desc    : "Escalier en acier laqué blanc, à limon central. La transparence de la structure préserve la fluidité visuelle entre les niveaux.",
+      image   : "images/Nouvelle lecture de l'habiter/Elevation escalier.png"
+    },
+
+    chambre: {
+      eyebrow : "Étage",
+      titre   : "Chambre",
+      surface : "18 m²",
+      desc    : "Chambre orientée plein sud pour bénéficier d'un ensoleillement maximal. Grande fenêtre sur jardin, parquet chêne huilé.",
+      image   : "images/Nouvelle lecture de l'habiter/Elevation chambre.webp"
+    },
+
+    entree: {
+      eyebrow : "Accès principal",
+      titre   : "Entrée",
+      surface : "6 m²",
+      desc    : "Sas d'entrée dégagé avec rangements intégrés. Transition entre l'extérieur et les espaces de vie.",
+      image   : "images/Nouvelle lecture de l'habiter/Elevation entrée.png"
+    }
+
+  };
+  /* ====================================================== */
+
+
+  /* ——— Hotspots : tooltip au survol + popup au clic ——— */
+  const hsList  = document.querySelectorAll('.hs');
+  const tooltip = document.getElementById('hsTooltip');
+  const ttNom   = document.getElementById('ttNom');
+  const wrap    = document.getElementById('planWrap');
+
+  // Modal elements
+  const overlay    = document.getElementById('modalOverlay');
+  const modalClose = document.getElementById('modalClose');
+  const imgWrap    = document.getElementById('modalImgWrap');
+  const titleEl    = document.getElementById('modalTitle');
+  const surfaceEl  = document.getElementById('modalSurface');
+
+  function openModal(id) {
+    const data = POPUPS[id];
+    if (!data) return;
+
+    // Image
+    imgWrap.innerHTML = '';
+    if (data.image) {
+      const img = document.createElement('img');
+      img.src = data.image;
+      img.className = 'modal-img';
+      imgWrap.appendChild(img);
+    } else {
+      const ph = document.createElement('div');
+      ph.className = 'modal-img-placeholder';
+      ph.innerHTML = '<span>' + data.titre + '</span>';
+      imgWrap.appendChild(ph);
+    }
+
+    titleEl.textContent   = data.titre   || '';
+    surfaceEl.textContent = data.surface || '';
+    surfaceEl.style.display = data.surface ? '' : 'none';
+
+    // Compense la largeur de la scrollbar pour éviter le décalage
+    const scrollbarW = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.paddingRight = scrollbarW + 'px';
+    document.body.style.overflow = 'hidden';
+
+    overlay.classList.add('open');
+  }
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+  }
+
+  modalClose.addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  hsList.forEach(hs => {
+    hs.addEventListener('mouseenter', e => {
+      ttNom.textContent = hs.dataset.nom;
+      tooltip.classList.add('visible');
+      moveTooltip(e);
+    });
+    hs.addEventListener('mousemove', moveTooltip);
+    hs.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
+
+    // Clic → ouvre la popup
+    hs.addEventListener('click', () => {
+      tooltip.classList.remove('visible');
+      openModal(hs.dataset.id);
+    });
+  });
+
+  function moveTooltip(e) {
+    const r  = wrap.getBoundingClientRect();
+    let x = e.clientX - r.left + 16;
+    let y = e.clientY - r.top  + 16;
+    const tw = tooltip.offsetWidth  || 240;
+    const th = tooltip.offsetHeight || 220;
+    if (x + tw > r.width  - 8) x = e.clientX - r.left - tw - 8;
+    if (y + th > r.height - 8) y = e.clientY - r.top  - th - 8;
+    tooltip.style.left = x + 'px';
+    tooltip.style.top  = y + 'px';
+  }
+
+</script>
+
+</body>
+</html>
