@@ -3,284 +3,1015 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio Yuna Bernard</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Cinzel:wght@300;400&display=swap" rel="stylesheet">
+<title>Yuna Bernard — Architecture d'Intérieur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --white: #ffffff;
-    --gray-arch: #b8b5b0;
-    --black: #1a1a1a;
-  }
+/* ─────────────────────────────────────
+   TOKENS
+───────────────────────────────────── */
+:root {
+  --bg:    #F2EFE9;
+  --bg2:   #EDEAE3;
+  --ink:   #2A2520;
+  --mid:   #7A7060;
+  --light: #B0A898;
+  --acc:   #8C7458;   /* seule couleur — brun chaud */
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans:  'Jost', sans-serif;
+  --E:     cubic-bezier(.16,1,.3,1);
+  --max:   1200px;
+}
 
-  html, body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: var(--white);
-    font-family: 'Cormorant Garamond', serif;
-    cursor: none;
-  }
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box }
+html { scroll-behavior:smooth }
 
-  /* Custom cursor */
-  .cursor {
-    width: 12px; height: 12px;
-    background: var(--black);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s, height 0.3s;
-  }
-  .cursor-ring {
-    width: 36px; height: 36px;
-    border: 1px solid var(--black);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9998;
-    transform: translate(-50%, -50%);
-    opacity: 0.5;
-    transition: width 0.3s, height 0.3s, opacity 0.3s;
-  }
-  /* Curseur agrandi sur les zones cliquables */
-  body.hovering .cursor      { width: 6px; height: 6px; }
-  body.hovering .cursor-ring { width: 56px; height: 56px; opacity: 0.25; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
 
-  /* Scène : toute la fenêtre */
-  .scene {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--white);
-  }
+::selection { background: var(--acc); color: var(--bg) }
+::-webkit-scrollbar { width: 2px }
+::-webkit-scrollbar-thumb { background: var(--acc) }
 
-  .scene img#bgImg {
-    display: block;
-    height: 100vh;
-    width: auto;
-    max-width: 100vw;
-    max-height: 100vh;
-    object-fit: contain;
-  }
+/* ─────────────────────────────────────
+   NAV — invisible, minimaliste
+───────────────────────────────────── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 2rem 3rem;
+  transition: background .5s, padding .4s var(--E);
+}
+.nav.on {
+  background: rgba(242,239,233,.95);
+  backdrop-filter: blur(16px);
+  padding: 1.2rem 3rem;
+  border-bottom: 1px solid rgba(42,37,32,.06);
+}
+.nav-logo { font-family:var(--serif); font-size:1.1rem; font-weight:400; color:var(--bg); letter-spacing:.01em; cursor:default }
+.nav-logo em { font-style:italic; color:var(--acc) }
+.nav.on .nav-logo { color:var(--ink) }
+.nav.on .nav-logo em { color:var(--acc) }
+.nav-links { display: flex; gap: 2.5rem; list-style: none }
+.nav-links a { font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(242,239,233,.55); text-decoration: none; transition: color .3s; }
+.nav-links a:hover { color: var(--bg) }
+.nav.on .nav-links a { color: var(--mid) }
+.nav.on .nav-links a:hover { color: var(--ink) }
+.nav-contact-link { color: rgba(242,239,233,.55) !important; border-bottom: none !important; padding-bottom: 0; transition: color .3s !important; }
+.nav-contact-link:hover { color: var(--acc) !important; }
+.nav.on .nav-contact-link { color: var(--mid) !important; }
+.nav.on .nav-contact-link:hover { color: var(--acc) !important; }
 
-  /* Overlay calé par JS sur l'image */
-  .img-overlay {
-    position: fixed;
-    pointer-events: none;
-    z-index: 10;
-  }
+/* ─────────────────────────────────────
+   REVEAL
+───────────────────────────────────── */
+.rv {
+  opacity: 0; transform: translateY(22px);
+  transition: opacity 1s var(--E), transform 1s var(--E);
+}
+.rv.on { opacity: 1; transform: none }
+.d1{transition-delay:.1s}.d2{transition-delay:.22s}
+.d3{transition-delay:.34s}.d4{transition-delay:.46s}
+.d5{transition-delay:.58s}
 
-  /* ── Nav ── */
-  .overlay-nav {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 2% 0%;
-  }
-  .nav-name {
-    font-size: clamp(9px, 1.1vw, 14px);
-    font-weight: 300;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: var(--black);
-    line-height: 1.8;
-    opacity: 0.6;
-  }
-  .nav-name em {
-    font-style: italic;
-    font-size: 0.85em;
-    letter-spacing: 0.18em;
-    color: var(--gray-arch);
-    display: block;
-  }
-  .nav-contact {
-    font-size: clamp(8px, 0.95vw, 12px);
-    font-weight: 300;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: var(--gray-arch);
-    text-decoration: none;
-    transition: color 0.3s;
-    pointer-events: all;
-    cursor: none;
-    padding-top: 4px;
-  }
-  .nav-contact:hover { color: var(--black); }
+/* ─────────────────────────────────────
+   HERO
+───────────────────────────────────── */
 
-  /* ── Titre animé en continu ── */
-  .portfolio-title {
-    position: absolute;
-    bottom: 2%;
-    left: 0; right: 0;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(10px, 2vw, 30px);
-    font-weight: 300;
-    letter-spacing: 0.35em;
-    color: var(--black);
-    text-align: center;
-    /* Animation continue : légère respiration + shimmer */
-    animation: titleBreathe 3s ease-in-out infinite;
-  }
+/* Hero graphique */
+.hero {
+  min-height: 100svh;
+  background: var(--ink);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+}
 
-  @keyframes titleBreathe {
-    0%   { opacity: 0.55; transform: translateY(0px);   letter-spacing: 0.35em; }
-    50%  { opacity: 1;    transform: translateY(-4px);  letter-spacing: 0.42em; }
-    100% { opacity: 0.55; transform: translateY(0px);   letter-spacing: 0.35em; }
-  }
+/* Grille architecturale de fond */
+.hero-grid-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(242,239,233,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242,239,233,.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  opacity: 0; animation: fadeIn .6s .1s both;
+}
 
-  /* ── Images cliquables ── */
-  .hotspot {
-    position: absolute;
-    pointer-events: all;
-    cursor: none;
-    /* Coins légèrement arrondis */
-    border-radius: 2px;
-    transition: box-shadow 0.4s ease;
-  }
+/* Bande de texte architectural qui défile — horizontale */
+.hero-ticker {
+  overflow: hidden;
+  border-bottom: 1px solid rgba(242,239,233,.08);
+  padding: .75rem 0;
+  flex-shrink: 0;
+  margin-top: auto; /* pousse en bas */
+  position: relative; z-index: 2;
+}
+.hero-ticker-track {
+  display: flex; width: max-content; gap: 0;
+  animation: tickerScroll 30s linear infinite;
+}
+.hero-ticker-item {
+  display: flex; align-items: center; gap: 2.5rem;
+  padding: 0 2.5rem;
+  font-size: .58rem; letter-spacing: .28em; text-transform: uppercase;
+  color: rgba(242,239,233,.25); white-space: nowrap;
+  flex-shrink: 0;
+}
+.hero-ticker-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--acc); flex-shrink: 0 }
+.hero-ticker-accent { color: rgba(242,239,233,.5) }
+@keyframes tickerScroll { to { transform: translateX(-50%) } }
 
-  .hotspot img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transform: scale(1);
-    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                filter 0.5s ease;
-    filter: brightness(0.92);
-  }
+/* Contenu central */
+.hero-body {
+  flex: 1; display: flex;
+  align-items: center;
+  padding: 7rem 3rem 3rem;
+  position: relative; z-index: 2;
+}
 
-  .hotspot:hover img {
-    transform: scale(1.1);
-    filter: brightness(1);
-  }
+.hero-body-left { flex: 1 }
 
+.hero-label {
+  font-size: .56rem; letter-spacing: .32em; text-transform: uppercase;
+  color: rgba(242,239,233,.3);
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 3rem;
+  opacity: 0; animation: fU .6s .05s var(--E) forwards;
+}
+.hero-label::before { content:''; width:28px; height:1px; background:rgba(242,239,233,.2) }
 
-  /* Positions des 4 hotspots (% par rapport à l'overlay = par rapport à l'image)
-     Ajuste left/top/transform-translate pour centrer le point d'ancrage */
+.hero-name {
+  font-family: var(--serif);
+  font-size: clamp(4.5rem, 11vw, 11rem);
+  font-weight: 300; line-height: .88;
+  letter-spacing: -.025em;
+  color: var(--bg);
+  opacity: 0; animation: fU .7s .15s var(--E) forwards;
+}
+.hero-name em { display: block; font-style: italic; color: var(--acc) }
 
-  /* Haut gauche */
-  .hs-1 {
-    left: 4%;
-    top: 17%;
-    width: 20%;
-  }
-  /* Haut droit */
-  .hs-2 {
-    right: 8%;
-    top: 17.5%;
-    width: 20%;
-  }
-  /* Milieu gauche */
-  .hs-3 {
-    left: 32%;
-    top: 45%;
-    width: 23%;
-  }
-  /* Bas légèrement à droite */
-  .hs-4 {
-    left: 59%;
-    bottom: 8.5%;
-    width: 19%;
-  }
+.hero-desc {
+  margin-top: 3rem; max-width: 42ch;
+  font-size: clamp(.78rem, 1vw, .9rem);
+  color: rgba(242,239,233,.45); line-height: 1.9;
+  opacity: 0; animation: fU .6s .28s var(--E) forwards;
+}
+
+.hero-scroll-cue {
+  margin-top: 4rem;
+  display: flex; align-items: center; gap: 1rem;
+  font-size: .52rem; letter-spacing: .26em; text-transform: uppercase;
+  color: rgba(242,239,233,.3);
+  opacity: 0; animation: fU .6s .4s var(--E) forwards;
+}
+.hero-scroll-line { width: 1px; height: 36px; background: rgba(242,239,233,.15); position: relative; overflow: hidden }
+.hero-scroll-line::after {
+  content:''; position:absolute; inset:0; background:var(--acc);
+  transform:translateY(-100%); animation:scanV 2s .8s ease-in-out infinite;
+}
+
+/* Côté droit — bloc chiffres architecturaux */
+.hero-body-right {
+  width: 240px; flex-shrink: 0;
+  border-left: 1px solid rgba(242,239,233,.08);
+  padding-left: 2.5rem;
+  display: flex; flex-direction: column; gap: 2.5rem;
+  opacity: 0; animation: fU .6s .35s var(--E) forwards;
+}
+.hero-stat {}
+.hero-stat-num {
+  font-family: var(--serif);
+  font-size: 2.2rem; font-weight: 300; font-style: italic;
+  color: rgba(242,239,233,.2); line-height: 1; margin-bottom: .3rem;
+}
+.hero-stat-lbl {
+  font-size: .52rem; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(242,239,233,.3); line-height: 1.6;
+}
+
+/* Numéro décoratif en fond */
+.hero-bg-num {
+  position: absolute; right: -2rem; top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--serif); font-size: clamp(18rem, 35vw, 34rem);
+  font-weight: 300; line-height: 1;
+  color: rgba(242,239,233,.025);
+  user-select: none; pointer-events: none;
+  letter-spacing: -.06em;
+  opacity: 0; animation: fadeIn .8s .2s both;
+}
+
+/* Ligne décorative verticale */
+.hero-v-line {
+  position: absolute; left: 50%; top: 7rem; bottom: 0;
+  width: 1px; background: rgba(242,239,233,.04);
+  pointer-events: none;
+}
+
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+@keyframes scanV { 0%{transform:translateY(-100%)} 50%{transform:translateY(0)} 100%{transform:translateY(100%)} }
+
+/* ─────────────────────────────────────
+   SEPARATEUR
+───────────────────────────────────── */
+.sep {
+  display: flex; align-items: center; gap: 1.5rem;
+  padding: 0 clamp(1.5rem,3vw,3rem); margin: 0;
+  max-width: var(--max); margin: 0 auto;
+}
+.sep-line { flex: 1; height: 1px; background: rgba(42,37,32,.1) }
+.sep-txt {
+  font-size: .55rem; letter-spacing: .28em; text-transform: uppercase;
+  color: var(--light); white-space: nowrap;
+}
+
+/* ─────────────────────────────────────
+   SECTION WRAPPER
+───────────────────────────────────── */
+.wrap {
+  max-width: var(--max); margin: 0 auto;
+  padding: clamp(5rem,10vw,9rem) clamp(1.5rem,3vw,3rem);
+}
+
+/* ─────────────────────────────────────
+   PROJETS — liste façon yunabernard
+───────────────────────────────────── */
+#projets { background: var(--bg) }
+
+.proj-header {
+  text-align: center;
+  margin-bottom: clamp(4rem,7vw,7rem);
+}
+.proj-header .sec-tag {
+  font-size: .58rem; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--light); display: flex; align-items: center;
+  justify-content: center; gap: 1rem; margin-bottom: 1.5rem;
+}
+.proj-header .sec-tag::before,
+.proj-header .sec-tag::after { content: ''; width: 28px; height: 1px; background: var(--light) }
+.proj-header h2 {
+  font-family: var(--serif);
+  font-size: clamp(2.5rem,5vw,5rem);
+  font-weight: 300; line-height: 1.05;
+  color: var(--ink); letter-spacing: -.01em;
+}
+.proj-header h2 em { font-style: italic; color: var(--acc) }
+
+/* Liste projets */
+.proj-list { display: flex; flex-direction: column; gap: 2px }
+
+.pj {
+  display: grid;
+  grid-template-columns: 80px 1fr 1fr;
+  align-items: center;
+  gap: 3rem;
+  padding: 2.8rem 0;
+  border-bottom: 1px solid rgba(42,37,32,.08);
+  cursor: pointer;
+  position: relative;
+  transition: background .3s;
+}
+.pj::before {
+  content: ''; position: absolute; left: -3rem; top: 0; bottom: 0; width: 0;
+  background: var(--acc); transition: width .5s var(--E);
+}
+.pj:hover::before { width: 2px }
+.pj:first-child { border-top: 1px solid rgba(42,37,32,.08) }
+
+.pj-num {
+  font-family: var(--serif); font-size: 1rem; font-style: italic;
+  color: var(--light); transition: color .35s;
+}
+.pj:hover .pj-num { color: var(--acc) }
+
+.pj-info {}
+.pj-cat {
+  font-size: .56rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--light); margin-bottom: .5rem; transition: color .35s;
+}
+.pj:hover .pj-cat { color: var(--acc) }
+.pj-title {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+  font-weight: 300; color: var(--ink); line-height: 1.1;
+  transition: transform .5s var(--E);
+}
+.pj:hover .pj-title { transform: translateX(8px) }
+.pj-title em { font-style: italic }
+
+.pj-desc {
+  font-size: .83rem; color: var(--mid); line-height: 1.85;
+  max-width: 40ch;
+}
+
+.pj-arrow {
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  width: 36px; height: 36px; border: 1px solid rgba(42,37,32,.12);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--light); transition: background .35s, border-color .35s, color .35s, transform .35s var(--E);
+  transform: translateY(-50%) rotate(0deg);
+}
+.pj:hover .pj-arrow {
+  background: var(--acc); border-color: var(--acc); color: var(--bg);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* ─────────────────────────────────────
+   MODAL PROJET — style yunabernard
+   Titre centré, texte centré, images pleine largeur
+───────────────────────────────────── */
+.mOv {
+  position: fixed; inset: 0; z-index: 300;
+  background: var(--bg);
+  overflow-y: auto;
+  opacity: 0; pointer-events: none;
+  transition: opacity .5s var(--E);
+}
+.mOv.open { opacity: 1; pointer-events: all }
+
+/* Bouton fermer */
+.m-close-bar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.4rem 3rem;
+  background: rgba(242,239,233,.95);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(42,37,32,.06);
+}
+.m-close-logo {
+  font-family: var(--serif); font-size: 1rem; color: var(--ink);
+  text-decoration: none;
+}
+.m-close-logo em { font-style: italic; color: var(--acc) }
+.m-close-btn {
+  font-size: .58rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--mid); background: none; border: none; cursor: pointer;
+  display: flex; align-items: center; gap: .7rem; transition: color .3s;
+}
+.m-close-btn:hover { color: var(--ink) }
+.m-close-btn::before {
+  content: ''; width: 24px; height: 1px; background: currentColor;
+}
+
+/* Hero du projet */
+.m-hero {
+  text-align: center;
+  padding: clamp(4rem,8vw,7rem) 3rem clamp(3rem,5vw,5rem);
+  max-width: 860px; margin: 0 auto;
+}
+.m-tag-line {
+  font-size: .56rem; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--light); display: flex; align-items: center;
+  justify-content: center; gap: 1rem; margin-bottom: 2.5rem;
+}
+.m-tag-line::before, .m-tag-line::after { content: ''; width: 28px; height: 1px; background: var(--light) }
+
+.m-title {
+  font-family: var(--serif);
+  font-size: clamp(3.5rem, 8vw, 8rem);
+  font-weight: 300; line-height: .9; letter-spacing: -.02em;
+  color: var(--ink);
+}
+.m-title em { font-style: italic; color: var(--acc) }
+
+.m-rule { width: 28px; height: 1px; background: var(--mid); margin: 2.5rem auto }
+
+.m-intro {
+  font-size: clamp(.88rem, 1.15vw, 1.05rem);
+  color: var(--mid); line-height: 1.9; max-width: 58ch; margin: 0 auto;
+  text-align: center;
+}
+
+/* Image pleine largeur */
+.m-full-img {
+  width: 100%; max-width: 1100px; margin: clamp(3rem,6vw,5rem) auto;
+  padding: 0 3rem;
+}
+.m-img-ph {
+  width: 100%;
+  background: var(--bg2);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.m-img-ph.ratio-wide { aspect-ratio: 16/9 }
+.m-img-ph.ratio-plan { aspect-ratio: 4/3 }
+.m-img-ph.ratio-tall { aspect-ratio: 3/4; max-width: 600px; margin: 0 auto }
+.m-img-label {
+  font-family: var(--serif); font-style: italic; font-size: .85rem;
+  color: var(--light); letter-spacing: .05em;
+}
+
+/* Grille 3 colonnes façon screenshot 3 */
+.m-grid3 {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  border: 1px solid rgba(42,37,32,.1);
+  margin: clamp(3rem,6vw,5rem) 3rem;
+}
+.m-col {
+  padding: 2.5rem 2rem;
+  border-right: 1px solid rgba(42,37,32,.1);
+  text-align: center;
+}
+.m-col:last-child { border-right: none }
+.m-col-num {
+  font-size: .58rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--light); margin-bottom: 1.5rem;
+  display: flex; align-items: center; justify-content: center; gap: .6rem;
+}
+.m-col-num::before { content: '—' }
+.m-col-title {
+  font-family: var(--serif); font-size: clamp(1.2rem,2vw,1.8rem);
+  font-weight: 400; color: var(--ink); margin-bottom: .8rem;
+}
+.m-col-sub {
+  font-size: .56rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--light); margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem; border-bottom: 1px solid rgba(42,37,32,.08);
+}
+.m-col-txt { font-size: .83rem; color: var(--mid); line-height: 1.9 }
+
+/* Layout image gauche + texte droite (screenshot 5) */
+.m-split {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0; align-items: center;
+  margin: clamp(3rem,6vw,5rem) 0;
+  max-width: 100%;
+}
+.m-split-img {
+  width: 100%; aspect-ratio: 3/4;
+  background: var(--bg2);
+  display: flex; align-items: center; justify-content: center;
+  padding: 2rem;
+}
+.m-split-img.landscape { aspect-ratio: 4/3 }
+.m-split-body {
+  padding: 4rem 5rem; text-align: center;
+}
+.m-split-title {
+  font-family: var(--serif); font-size: clamp(1.5rem,2.5vw,2.2rem);
+  font-weight: 300; line-height: 1.2; color: var(--ink); margin-bottom: 1.5rem;
+}
+.m-split-title em { font-style: italic }
+.m-split-txt { font-size: .88rem; color: var(--mid); line-height: 1.9; max-width: 42ch; margin: 0 auto }
+
+/* Caption sous image */
+.m-caption {
+  text-align: center; padding: 1rem 3rem 0;
+  font-size: .6rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--light);
+}
+
+/* Mots-clés bas de projet */
+.m-keywords {
+  display: flex; flex-wrap: wrap; gap: .6rem;
+  justify-content: center;
+  padding: 0 3rem clamp(4rem,8vw,6rem);
+  max-width: 700px; margin: 0 auto;
+}
+.m-kw {
+  font-size: .56rem; letter-spacing: .16em; text-transform: uppercase;
+  border: 1px solid rgba(42,37,32,.12); padding: .3rem .9rem; color: var(--mid);
+  transition: background .3s, color .3s, border-color .3s;
+}
+.m-kw:hover { background: var(--ink); color: var(--bg); border-color: var(--ink) }
+
+/* Phrase bas de la liste projets */
+.proj-footer {
+  margin-top: 3.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid rgba(42,37,32,.08);
+  text-align: center;
+}
+.proj-footer-txt {
+  font-size: .88rem; color: var(--mid); line-height: 1.8;
+}
+.proj-footer-link {
+  display: inline-block; margin-left: .8rem;
+  font-size: .62rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ink); text-decoration: none;
+  border-bottom: 1px solid rgba(42,37,32,.2); padding-bottom: 1px;
+  transition: color .3s, border-color .3s;
+}
+.proj-footer-link:hover { color: var(--acc); border-color: var(--acc) }
+
+/* ─────────────────────────────────────
+   À PROPOS
+───────────────────────────────────── */
+#about { background: var(--bg2) }
+
+.about-wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(5rem,10vw,8rem) clamp(1.5rem,3vw,3rem);
+}
+
+/* Titre pleine largeur, aligné à gauche */
+.about-title-block {
+  text-align: left;
+  margin-bottom: clamp(2.5rem,4vw,4rem);
+}
+.about-title-block .sec-tag {
+  font-size: .56rem; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--light); display: flex; align-items: center;
+  gap: 1rem; margin-bottom: 1.2rem; justify-content: flex-start;
+}
+.about-title-block .sec-tag::before { content:''; width:22px; height:1px; background:var(--light) }
+.about-title-block h2 {
+  font-family: var(--serif);
+  font-size: clamp(2rem,4vw,4rem);
+  font-weight: 300; line-height: 1.05; color: var(--ink);
+}
+.about-title-block h2 em { font-style: italic }
+
+/* Grille : photo (1/4 environ) | contenu (3/4) */
+.about-cols {
+  display: grid;
+  grid-template-columns: 1fr 2.5fr;
+  gap: clamp(2rem,3.5vw,3.5rem);
+  align-items: start;
+}
+
+/* Colonne gauche — photo portrait standard */
+.about-left {
+  display: flex;
+}
+.about-photo {
+  width: 100%;
+  aspect-ratio: 3/4;
+  background: linear-gradient(160deg,#E0DAD0,#B8B0A0,#887868);
+  display: flex; align-items: flex-end; padding: 1.4rem;
+   position: relative;
+  overflow: hidden;
+}
+.about-photo-cap {
+  font-size: .56rem; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(242,239,233,.4);
+}
+
+/* Colonne droite */
+.about-right {
+  display: flex; flex-direction: column;
+  min-width: 0;   /* évite le débordement dans une grille CSS */
+}
+.about-p { font-size: .9rem; line-height: 2.05; color: var(--mid); margin-bottom: 1.3rem }
+
+.about-items {
+  margin: 2rem 0;
+  display: flex; flex-direction: column;
+  border-top: 1px solid rgba(42,37,32,.08);
+}
+.about-item {
+  display: grid; grid-template-columns: 110px 1fr;
+  gap: 1.5rem; align-items: baseline;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid rgba(42,37,32,.08);
+}
+.ai-label {
+  font-size: .54rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--light); flex-shrink: 0;
+}
+.ai-value {
+  font-family: var(--serif); font-size: 1.05rem; font-weight: 400;
+  color: var(--ink); line-height: 1.35;
+}
+
+.about-rule { width: 28px; height: 1px; background: var(--acc); margin: 0 0 1.8rem }
+
+/* Logiciels */
+.skills-lbl {
+  font-size: .54rem; letter-spacing: .26em; text-transform: uppercase;
+  color: var(--light); margin-bottom: 1rem;
+}
+.skills-belt {
+  overflow: hidden;
+  border-top: 1px solid rgba(42,37,32,.08);
+  border-bottom: 1px solid rgba(42,37,32,.08);
+  padding: .7rem 0; margin-bottom: 2.8rem;
+  position: relative;
+}
+.skills-belt::before, .skills-belt::after {
+  content:''; position:absolute; top:0; bottom:0; width:2.5rem; z-index:1;
+}
+.skills-belt::before { left:0; background:linear-gradient(to right,var(--bg2),transparent) }
+.skills-belt::after  { right:0; background:linear-gradient(to left,var(--bg2),transparent) }
+.skills-track {
+  display:flex; align-items:center; gap:.8rem;
+  width:max-content; animation:skillsScroll 20s linear infinite; white-space:nowrap;
+}
+.skills-track:hover { animation-play-state:paused }
+@keyframes skillsScroll { to { transform:translateX(-50%) } }
+.sk { font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--mid); transition:color .3s; cursor:default }
+.sk:hover { color:var(--acc) }
+.sk-sep { color:var(--acc); font-size:.5rem; flex-shrink:0 }
+
+.about-vals {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 3rem;
+}
+.av-n { font-size: .54rem; letter-spacing: .2em; text-transform: uppercase; color: var(--light); margin-bottom: .35rem }
+.av-v { font-family: var(--serif); font-size: 1rem; color: var(--ink); line-height: 1.3 }
+
+.about-cta {
+  display: inline-flex; align-items: center; gap: 1rem;
+  font-size: .6rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ink); text-decoration: none;
+  border-bottom: 1px solid rgba(42,37,32,.2); padding-bottom: 1px;
+  transition: color .3s, border-color .3s;
+}
+.about-cta:hover { color: var(--acc); border-color: var(--acc) }
+.about-cta svg { transition: transform .35s var(--E) }
+.about-cta:hover svg { transform: translateX(5px) }
+
+/* ─────────────────────────────────────
+   CONTACT
+───────────────────────────────────── */
+#contact { background: var(--bg) }
+
+.contact-hero {
+  text-align: center;
+  padding: clamp(5rem,10vw,8rem) 3rem clamp(3rem,5vw,4rem);
+  max-width: 700px; margin: 0 auto;
+}
+.contact-hero .sec-tag {
+  font-size: .56rem; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--light); display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 2rem;
+}
+.contact-hero .sec-tag::before, .contact-hero .sec-tag::after { content: ''; width: 24px; height: 1px; background: var(--light) }
+.contact-hero h2 {
+  font-family: var(--serif);
+  font-size: clamp(2.5rem,5vw,5rem);
+  font-weight: 300; line-height: 1.05; color: var(--ink); margin-bottom: 1.5rem;
+}
+.contact-hero h2 em { font-style: italic }
+.contact-hero p { font-size: .88rem; color: var(--mid); line-height: 1.85 }
+
+.avail {
+  display: inline-flex; align-items: center; gap: .7rem;
+  font-size: .58rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--acc); margin: 2rem 0;
+}
+.avail-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--acc); animation: blink 2s ease-in-out infinite }
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:.2} }
+
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(4rem,8vw,7rem); max-width: var(--max); margin: 0 auto;
+  padding: 0 3rem clamp(5rem,10vw,8rem);
+}
+
+.cinfo { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1.2rem; font-size: .85rem; color: var(--ink) }
+.cico {
+  width: 34px; height: 34px; border: 1px solid rgba(42,37,32,.12); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; color: var(--light);
+  transition: background .3s, color .3s;
+}
+.cinfo:hover .cico { background: var(--ink); color: var(--bg) }
+.cinfo a { color: var(--ink); text-decoration: none; transition: color .3s }
+.cinfo:hover a { color: var(--acc) }
+
+.cta-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2.5rem }
+
+.btn-dk {
+  display: inline-flex; align-items: center; gap: .8rem;
+  font-size: .6rem; letter-spacing: .18em; text-transform: uppercase;
+  background: var(--ink); color: var(--bg); padding: .8rem 2rem;
+  text-decoration: none; position: relative; overflow: hidden; transition: color .35s;
+}
+.btn-dk::before {
+  content:''; position:absolute; inset:0; background:var(--acc);
+  transform:translateX(-101%); transition:transform .4s var(--E);
+}
+.btn-dk:hover::before { transform:translateX(0) }
+.btn-dk span,.btn-dk svg { position:relative; z-index:1 }
+
+.btn-lt {
+  display: inline-flex; align-items: center; gap: .8rem;
+  font-size: .6rem; letter-spacing: .18em; text-transform: uppercase;
+  background: transparent; color: var(--ink); padding: .8rem 2rem;
+  text-decoration: none; border: 1px solid rgba(42,37,32,.14);
+  transition: border-color .3s, background .3s;
+}
+.btn-lt:hover { border-color: var(--ink); background: var(--bg2) }
+
+/* Form */
+.fg { margin-bottom: 1.6rem }
+.fl { display:block; font-size:.54rem; letter-spacing:.22em; text-transform:uppercase; color:var(--light); margin-bottom:.55rem }
+.fi,.ft {
+  width:100%; background:transparent; border:none;
+  border-bottom:1px solid rgba(42,37,32,.12);
+  padding:.55rem 0; font-family:var(--sans); font-weight:300;
+  font-size:.87rem; color:var(--ink); outline:none;
+  transition:border-color .4s;
+}
+.fi:focus,.ft:focus { border-color:var(--ink) }
+.ft { resize:none; height:85px }
+.fsb {
+  width:100%; background:var(--ink); color:var(--bg); border:none;
+  padding:.9rem; font-family:var(--sans); font-size:.6rem;
+  letter-spacing:.2em; text-transform:uppercase; cursor:pointer;
+  position:relative; overflow:hidden; transition:color .35s;
+}
+.fsb::before { content:''; position:absolute; inset:0; background:var(--acc); transform:translateX(-101%); transition:transform .4s var(--E) }
+.fsb:hover::before { transform:translateX(0) }
+.fsb span { position:relative; z-index:1 }
+#fok { display:none; margin-top:1rem; font-size:.74rem; color:var(--acc); letter-spacing:.1em; padding:.7rem; border-left:2px solid var(--acc) }
+
+/* ─────────────────────────────────────
+   FOOTER
+───────────────────────────────────── */
+footer {
+  background: #f9f7f3; padding: 28px 52px;
+  display: flex; align-items: center; justify-content: flex-end;
+  border-top: 1px solid rgba(107,92,78,0.15);
+}
+.f-year { font-size:.58rem; letter-spacing:.1em; color:#6b5c4e }
+
+/* ─────────────────────────────────────
+   KEYFRAMES
+───────────────────────────────────── */
+@keyframes fU { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+
+/* ─────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────── */
+@media(max-width:900px){
+  .about-cols,.contact-grid { grid-template-columns:1fr }
+  .about-photo { aspect-ratio: 4/3 }
+  .m-grid3 { grid-template-columns:1fr; margin:2rem 1.5rem }
+  .m-col { border-right:none; border-bottom:1px solid rgba(42,37,32,.1) }
+  .m-col:last-child { border-bottom:none }
+  .m-split { grid-template-columns:1fr }
+  .pj { grid-template-columns:60px 1fr; gap:1.5rem }
+  .pj-desc { display:none }
+  .pj-arrow { right:0 }
+}
+@media(max-width:600px){
+  .nav-links,.nav-contact { display:none }
+  .nav { padding:1.5rem }
+  .nav.on { padding:1.2rem 1.5rem }
+  .m-close-bar { padding:1.2rem 1.5rem }
+  .m-split-body { padding:2.5rem 1.5rem }
+  .pj::before { left:-1.5rem }
+  .wrap { padding-left:1.5rem; padding-right:1.5rem }
+}
 </style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<!-- ═══ NAV ═══════════════════════════════════ -->
+<nav class="nav" id="nav">
+  <span class="nav-logo">Yuna <em>Bernard</em></span>
+  <ul class="nav-links">
+    <li><a href="#projets">Projets</a></li>
+    <li><a href="contact.html" class="nav-contact-link">Contact</a></li>
+  </ul>
+</nav>
 
-<div class="scene">
-  <img id="bgImg" src="images/Index/Page de garde.png" alt="Page de garde">
-</div>
+<!-- ═══ HERO GRAPHIQUE ═══════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-v-line"></div>
+  <div class="hero-bg-num">Y</div>
 
-<div class="img-overlay" id="imgOverlay">
+  <div class="hero-body">
+    <div class="hero-body-left">
+      <div class="hero-label">Portfolio · Architecture d'intérieur </div>
+      <h1 class="hero-name">Yuna<em>Bernard</em></h1>
+      <p class="hero-desc">Entre lumière et matière, imaginer des espaces sensibles, pensés pour être vécus.</p>
+      <div class="hero-scroll-cue">
+        <div class="hero-scroll-line"></div>
+        Découvrir les projets
+      </div>
+    </div>
 
-  <!-- Nav -->
-  <nav class="overlay-nav">
-    <span class="nav-name">
-      Yuna Bernard<br>
-      <em>Architecture &amp; Design</em>
-    </span>
-    <a href="contact.html" class="nav-contact">Contact</a>
-  </nav>
+    <div class="hero-body-right">
+      <div class="hero-stat">
+        <div class="hero-stat-num">04</div>
+        <div class="hero-stat-lbl">Projets<br>sélectionnés</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">3<em style="font-size:1.2rem">ème</em></div>
+        <div class="hero-stat-lbl">Année en <br>architecture d'intérieur</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">∞</div>
+        <div class="hero-stat-lbl">Créativité sans limite<br></div>
+      </div>
+    </div>
+  </div>
 
-  <!-- Titre animé -->
-  <h1 class="portfolio-title">Portfolio Yuna Bernard</h1>
+  <!-- Ticker architectural -->
+  <div class="hero-ticker">
+    <div class="hero-ticker-track">
+      <div class="hero-ticker-item"><span class="hero-ticker-accent">Lignes organiques</span><span class="hero-ticker-dot"></span>Architecture intérieure<span class="hero-ticker-dot"></span>Atmosphères<span class="hero-ticker-dot"></span><span class="hero-ticker-accent">Créativité</span><span class="hero-ticker-dot"></span>Expérimentation<span class="hero-ticker-dot"></span>Volumes<span class="hero-ticker-dot"></span><span class="hero-ticker-accent">Ambiances</span><span class="hero-ticker-dot"></span>Maquettes<span class="hero-ticker-dot"></span>Espaces habités<span class="hero-ticker-dot"></span><span class="hero-ticker-accent">Ouverture</span><span class="hero-ticker-dot"></span>Sensibilité<span class="hero-ticker-dot"></span></div>
+      <div class="hero-ticker-item"><span class="hero-ticker-accent">Lignes organiques</span><span class="hero-ticker-dot"></span>Architecture intérieure<span class="hero-ticker-dot"></span>Atmosphères<span class="hero-ticker-dot"></span><span class="hero-ticker-accent">Créativité</span><span class="hero-ticker-dot"></span>Expérimentation<span class="hero-ticker-dot"></span>Volumes<span class="hero-ticker-dot"></span><span class="hero-ticker-accent">Ambiances</span><span class="hero-ticker-dot"></span>Maquettes<span class="hero-ticker-dot"></span>Espaces habités<span class="hero-ticker-dot"></span><span class="hero-ticker-accent">Ouverture</span><span class="hero-ticker-dot"></span>Sensibilité<span class="hero-ticker-dot"></span></div>
+    </div>
+  </div>
+</section>
 
-  <!-- 4 images cliquables -->
-  <a href="nouvelle-lecture-de-l-habiter.html" class="hotspot hs-1">
-    <img src="images/Index/Nouvelle lecture de l'habiter.webp" alt="Nouvelle lecture de l'habiter">
-  </a>
+<!-- ═══ ABOUT (avant projets) ═══════════════════ -->
+<section id="about">
+  <div class="about-wrap">
 
-  <a href="cafe-et-oreiller.html" class="hotspot hs-2">
-    <img src="images/Index/Café et Oreiller.webp" alt="Café et Oreiller">
-  </a>
+    <!-- Titre pleine largeur, aligné à gauche, une seule ligne -->
+    <div class="about-title-block">
+      <div class="sec-tag rv">Ma démarche</div>
+      <h2 class="rv d1">À propos de <em>moi.</em></h2>
+    </div>
 
-  <a href="cave-a-vin.html" class="hotspot hs-3">
-    <img src="images/Index/Cave à vin.webp" alt="Cave à vin">
-  </a>
+    <!-- Photo (1/4) | Contenu (3/4) — hauteurs alignées -->
+    <div class="about-cols">
 
-  <a href="carnets-maquettes.html" class="hotspot hs-4">
-    <img src="images/Index/Carnets et maquettes.webp" alt="Carnets et maquettes">
-  </a>
+      <div class="about-left">
+       <div class="about-photo rv">
+         <img src="images\index\Portrait.png" alt="Yuna Bernard" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;position:absolute;inset:0;">
+         <span class="about-photo-cap" style="position:relative;z-index:1;">Yuna Bernard</span>
+       </div>
+      </div>
 
-</div>
+      <div class="about-right">
+        <p class="about-p rv">Je m’appelle Yuna Bernard. Je suis étudiante en architecture d’intérieur, et je m’intéresse à la manière dont les espaces influencent notre manière de vivre et de ressentir.</p>
+        <p class="about-p rv d1">Je pense que chaque lieu porte une mémoire; celle du site, des matériaux, et de la lumière qui le traverse au fil de la journée. Dans mes projets, je cherche à comprendre ce qui fait l’identité d’un espace, en portant une attention particulière à son contexte, à ses usages et à son atmosphère. Mon objectif est de concevoir des lieux justes, sensibles, et ancrés dans leur environnement.</p>
 
+        <div class="about-items rv d2">
+          <div class="about-item">
+            <span class="ai-label">Approche</span>
+            <span class="ai-value">Sensible, contextuelle, tournée vers la nature.</span>
+          </div>
+          <div class="about-item">
+            <span class="ai-label">Intention</span>
+            <span class="ai-value">Créer des espaces lumineux, naturels et durables.</span>
+          </div>
+          <div class="about-item">
+            <span class="ai-label">Formation</span>
+            <span class="ai-value">Architecture d'intérieur · 3ème année</span>
+          </div>
+        </div>
+
+        <div class="rv d3">
+          <p class="skills-lbl">Logiciels</p>
+          <div class="skills-belt">
+            <div class="skills-track">
+              <span class="sk">AutoCAD</span><span class="sk-sep">·</span>
+              <span class="sk">Archicad</span><span class="sk-sep">·</span>
+              <span class="sk">SketchUp</span><span class="sk-sep">·</span>
+              <span class="sk">Twinmotion</span><span class="sk-sep">·</span>
+              <span class="sk">InDesign</span><span class="sk-sep">·</span>
+              <span class="sk">Illustrator</span><span class="sk-sep">·</span>
+              <span class="sk">Rayon Design</span><span class="sk-sep">·</span>
+               <span class="sk">AutoCAD</span><span class="sk-sep">·</span>
+              <span class="sk">Archicad</span><span class="sk-sep">·</span>
+              <span class="sk">SketchUp</span><span class="sk-sep">·</span>
+              <span class="sk">Twinmotion</span><span class="sk-sep">·</span>
+              <span class="sk">InDesign</span><span class="sk-sep">·</span>
+              <span class="sk">Illustrator</span><span class="sk-sep">·</span>
+              <span class="sk">Rayon Design</span><span class="sk-sep">·</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="rv d4">
+          <a href="contact.html" class="about-cta">
+            Discuter d'une alternance
+            <svg width="18" height="11" viewBox="0 0 18 11" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M0 5.5h16M11 2l5 3.5L11 9"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROJETS ═══════════════════════════════ -->
+<section id="projets">
+  <div class="wrap">
+    <div class="proj-header rv">
+      <div class="sec-tag">Portfolio</div>
+      <h2>Quatre <em>espaces,</em><br>quatre histoires</h2>
+    </div>
+
+    <div class="proj-list">
+
+      <!-- 01 — Nouvelle lecture de l'habité -->
+      <div class="pj rv" onclick="window.location.href='nouvelle-lecture-de-l-habiter.html'" style="cursor:pointer">
+        <div class="pj-num">01</div>
+        <div class="pj-info">
+          <div class="pj-cat">Rénovation · Plans · Maison ancienne</div>
+          <div class="pj-title">Nouvelle lecture <em>de l'habité</em></div>
+        </div>
+        <div class="pj-desc">Relecture contemporaine d’une maison ancienne : repenser les espaces pour mieux se projeter.</div>
+        <div class="pj-arrow">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+        </div>
+      </div>
+
+      <!-- 02 — Café & Oreiller -->
+      <div class="pj rv" onclick="window.location.href='cafe-et-oreiller.html'" style="cursor:pointer">
+        <div class="pj-num">02</div>
+        <div class="pj-info">
+          <div class="pj-cat">Réhabilitation · B&B · Sardaigne</div>
+          <div class="pj-title">Café <em>& Oreiller</em></div>
+        </div>
+        <div class="pj-desc">Un bed & breakfast sur les côtes de Sardaigne, pensé en lien direct avec le paysage et la mer.</div>
+        <div class="pj-arrow">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+        </div>
+      </div>
+
+      <!-- 03 — Cave à Vin -->
+      <div class="pj rv d2" onclick="window.location.href='cave-a-vin.html'" style="cursor:pointer">
+        <div class="pj-num">03</div>
+        <div class="pj-info">
+          <div class="pj-cat">Intérieur · Particulier · Cave</div>
+          <div class="pj-title">Cave <em>à Vin</em></div>
+        </div>
+        <div class="pj-desc">Un espace de dégustation sensoriel en sous-sol, où bois, pierre et lumière accompagnent un parcours autour du vin.</div>
+        <div class="pj-arrow">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+        </div>
+      </div>
+
+      <!-- 04 — Carnet & Maquette -->
+      <div class="pj rv d3" onclick="window.location.href='carnets-maquettes.html'" style="cursor:pointer">
+        <div class="pj-num">04</div>
+        <div class="pj-info">
+          <div class="pj-cat">Processus · Croquis · Maquettes</div>
+          <div class="pj-title">Carnet <em>& Maquettes</em></div>
+        </div>
+        <div class="pj-desc">Avant le projet : croquis, maquettes, expérimentations : le geste avant la forme.</div>
+        <div class="pj-arrow">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Phrase parcours → contact -->
+    <div class="proj-footer rv">
+      <p class="proj-footer-txt">
+        Vous souhaitez en savoir plus sur mon parcours ?
+        <a href="contact.html" class="proj-footer-link">Me contacter →</a>
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═════════════════════════════════ -->
+<footer style="padding:28px 52px;display:flex;justify-content:flex-end;align-items:center;border-top:1px solid rgba(107,92,78,0.15);margin-top:0">
+  <div style="font-size:0.58rem;letter-spacing:0.1em;color:#6b5c4e">© <span id="footer-year"></span></div>
+</footer>
 <script>
-  /* --- Cursor --- */
-  const cursor = document.getElementById('cursor');
-  const ring   = document.getElementById('cursorRing');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-
-  // Agrandit le curseur au survol des hotspots
-  document.querySelectorAll('.hotspot, .nav-contact').forEach(el => {
-    el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-    el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
-  });
-
-  (function animateCursor() {
-    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
-    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
-    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-    requestAnimationFrame(animateCursor);
+  (function(){
+    const s=2026, c=new Date().getFullYear();
+    document.getElementById('footer-year').textContent = s===c ? s : s+'-'+c;
   })();
+</script>
 
-  /* --- Calage overlay sur l'image --- */
-  const img     = document.getElementById('bgImg');
-  const overlay = document.getElementById('imgOverlay');
+<!-- ═══ JS ═════════════════════════════════════ -->
+<script>
+'use strict';
 
-  function fitOverlay() {
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const natW = img.naturalWidth  || 1;
-    const natH = img.naturalHeight || 1;
-    const ratio = natW / natH;
+/* NAV SCROLL */
+// Forcer le retour en haut au chargement (contourne scroll-behavior:smooth)
+if (history.scrollRestoration) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
 
-    let rendH = vh;
-    let rendW = rendH * ratio;
-    if (rendW > vw) { rendW = vw; rendH = rendW / ratio; }
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('on', window.scrollY > 60);
+}, { passive: true });
 
-    const left = (vw - rendW) / 2;
-    const top  = (vh - rendH) / 2;
+/* REVEAL */
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); }
+  });
+}, { threshold: .08, rootMargin: '0px 0px -24px 0px' });
+document.querySelectorAll('.rv').forEach(el => ro.observe(el));
 
-    overlay.style.left   = left  + 'px';
-    overlay.style.top    = top   + 'px';
-    overlay.style.width  = rendW + 'px';
-    overlay.style.height = rendH + 'px';
-  }
+/* FORM */
+function handleSend(e) {
+  e.preventDefault();
+  const ok = document.getElementById('fok');
+  ok.style.display = 'block';
+  setTimeout(() => ok.style.display = 'none', 5000);
+}
 
-  if (img.complete && img.naturalWidth) { fitOverlay(); }
-  else { img.addEventListener('load', fitOverlay); }
-  window.addEventListener('resize', fitOverlay);
+/* SMOOTH SCROLL */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t && t !== document.body) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
 </script>
 </body>
 </html>

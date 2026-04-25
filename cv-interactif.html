@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yuna Bernard - CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --bg:      #F2EFE9;
+  --bg2:     #EDEAE3;
+  --ink:     #2A2520;
+  --mid:     #7A7060;
+  --light:   #B0A898;
+  --acc:     #8C7458;
+  --serif:   'Cormorant Garamond', Georgia, serif;
+  --sans:    'Jost', sans-serif;
+  --E:       cubic-bezier(.16,1,.3,1);
+  --border:  rgba(42,37,32,.09);
+  --side-w:  210px;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box }
+html { scroll-behavior:smooth }
+
+body {
+  background: var(--bg2);
+  font-family: var(--sans);
+  font-weight: 300;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px 60px;
+  min-height: 100vh;
+}
+
+::selection { background: var(--acc); color: var(--bg) }
+::-webkit-scrollbar { width: 2px }
+::-webkit-scrollbar-thumb { background: var(--acc) }
+
+/* ══════════════════════════════════════
+   PAGE A4  794 × 1123 px
+══════════════════════════════════════ */
+@keyframes pageIn {
+  from { opacity:0; transform:translateY(24px) }
+  to   { opacity:1; transform:translateY(0) }
+}
+
+.cv-page {
+  background: var(--bg);
+  width: 794px;
+  height: auto;
+  flex-shrink: 0;
+  box-shadow: 0 6px 60px rgba(42,37,32,.15);
+  display: grid;
+  grid-template-columns: 1fr var(--side-w);
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header  sidebar"
+    "main    sidebar"
+    "footer  sidebar";
+  /* Entrée douce au chargement */
+  animation: pageIn .9s cubic-bezier(.16,1,.3,1) both;
+}
+
+/* ── REVEAL AU SCROLL ── */
+.rv {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .9s var(--E), transform .9s var(--E);
+}
+.rv.on { opacity:1; transform:none }
+
+/* Délais échelonnés */
+.d1{transition-delay:.10s} .d2{transition-delay:.20s}
+.d3{transition-delay:.30s} .d4{transition-delay:.40s}
+.d5{transition-delay:.50s} .d6{transition-delay:.60s}
+
+/* ── LIGNE DE SECTION animée ── */
+.section-label::after {
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform .8s var(--E);
+}
+.rv.on .section-label::after,
+.rv.on.section-label::after {
+  transform: scaleX(1);
+}
+
+/* ── TICKER - accélération douce au load ── */
+.ticker-track {
+  animation: tickerScroll 20s linear infinite;
+  animation-delay: 1.2s;   /* démarre après l'apparition */
+  opacity: 0;
+  animation-fill-mode: both;
+}
+@keyframes tickerFadeIn {
+  from { opacity:0 }
+  to   { opacity:1 }
+}
+/* On fait apparaître le ticker avec un fondu séparé */
+.ticker-visible { animation: tickerFadeIn .6s ease .9s both, tickerScroll 20s 1.5s linear infinite }
+
+/* ── HOVER expériences - ligne acc plus vive ── */
+.exp-item { transition: background .3s var(--E), border-color .3s var(--E), transform .3s var(--E), box-shadow .3s var(--E) }
+.exp-item:hover { box-shadow: 2px 2px 12px rgba(140,116,88,.08) }
+
+/* ── HOVER timeline dots ── */
+.tl-dot { transition: background .3s var(--E), transform .35s var(--E), box-shadow .3s var(--E) }
+.tl-item:hover .tl-dot { box-shadow: 0 0 0 3px rgba(140,116,88,.15) }
+
+/* ── HOVER soft items ── */
+.soft-item { transition: color .3s, padding-left .3s var(--E) }
+.soft-item:hover { color: var(--ink); padding-left: 14px }
+.soft-item::before { transition: width .3s var(--E), background .3s }
+.soft-item:hover::before { width: 8px; background: var(--acc) }
+
+/* ── HOVER section-label ── */
+.section-label { transition: letter-spacing .4s var(--E) }
+.section-label:hover { letter-spacing: .36em }
+
+/* ── CADRE PHOTO hover ── */
+.photo-frame { transition: border-color .4s var(--E) }
+.photo-frame:hover { border-color: rgba(140,116,88,.5) }
+
+/* ══════════════════════════════════════
+   HEADER
+══════════════════════════════════════ */
+.cv-header {
+  grid-area: header;
+  border-bottom: 1px solid var(--border);
+  border-right:  1px solid var(--border);
+  padding: 22px 26px 18px;          /* ↓ réduit */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;                         /* ↓ réduit */
+}
+
+.header-tag {
+  font-size:7.5px; letter-spacing:.28em;
+  text-transform:uppercase; color:var(--acc);
+  display:flex; align-items:center; gap:8px;
+}
+.header-tag::before { content:''; width:18px; height:1px; background:var(--acc) }
+
+.cv-name {
+  font-family:var(--serif); font-weight:300;
+  font-size:48px; line-height:.88;
+  letter-spacing:-.02em; color:var(--ink);
+  margin-top:6px;
+}
+.cv-name em { display:block; font-style:italic; color:var(--acc) }
+
+.cv-subtitle {
+  font-size:8.5px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--mid); margin-top:7px;
+}
+
+.cv-accroche {
+  font-size:10px; color:var(--mid); line-height:1.7;
+  border-left:2px solid var(--acc); padding-left:12px;
+}
+
+/* ══════════════════════════════════════
+   SIDEBAR DROITE
+══════════════════════════════════════ */
+.cv-sidebar {
+  grid-area: sidebar;
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Photo - zone conteneur */
+.cv-photo {
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Pas de cadre sur les côtés, juste haut et bas */
+.photo-frame {
+  width: 100%;
+  height: 100%;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* Image entière, pas de zoom, pas de crop */
+.photo-frame img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+  filter: grayscale(10%);
+}
+
+/* Contenu sous la photo */
+#pdf-input { display:none }
+.cv-sidebar-content {
+  flex:1;
+  padding:14px 16px 12px;           /* ↓ réduit */
+  display:flex; flex-direction:column; gap:15px;  /* ↓ réduit */
+  overflow:hidden;
+}
+
+/* ══════════════════════════════════════
+   MAIN
+══════════════════════════════════════ */
+.cv-main {
+  grid-area: main;
+  border-right: 1px solid var(--border);
+  padding: 15px 26px 12px;          /* ↓ réduit */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;                         /* ↓ réduit */
+  overflow: hidden;
+}
+
+/* ══════════════════════════════════════
+   FOOTER
+══════════════════════════════════════ */
+.cv-footer {
+  grid-area: footer;
+  border-top:   1px solid var(--border);
+  border-right: 1px solid var(--border);
+  padding: 7px 26px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+/* ── Initiales YB style portfolio ── */
+.cv-footer-initials {
+  display: flex;
+  align-items: center;
+}
+.initials-letters {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 300;
+  color: rgba(42,37,32,.18);
+  line-height: 1;
+  letter-spacing: -.02em;
+}
+
+.cv-footer-year { font-size:7.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--light) }
+
+/* ══════════════════════════════════════
+   SECTIONS
+══════════════════════════════════════ */
+.section-label {
+  font-size:7.5px; letter-spacing:.3em;
+  text-transform:uppercase; color:var(--acc);
+  display:flex; align-items:center; gap:8px;
+  margin-bottom:8px;                /* ↓ réduit */
+}
+.section-label::after { content:''; flex:1; height:1px; background:var(--border) }
+
+/* ── PROFIL ── */
+.profil-text { font-size:10px; color:var(--mid); line-height:1.75 }
+
+/* ── CITATION ── */
+.vision-block {
+  padding: 18px 26px;
+  border-top:    1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.vision-deco {
+  position:absolute; top:4px; right:14px;
+  font-family:var(--serif); font-size:72px; font-weight:300;
+  font-style:italic; color:rgba(42,37,32,.04); line-height:1; user-select:none;
+}
+
+/* Ligne fixe */
+.vision-static {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--ink);
+  letter-spacing: .01em;
+  line-height: 1.4;
+}
+
+/* Conteneur du mot qui défile */
+.vision-rotating-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  height: 1.4em;          /* hauteur d'une ligne */
+  position: relative;
+}
+
+/* La liste de mots empilés verticalement - 5 items (4 + clone du 1er pour boucle infinie) */
+.vision-rotating {
+  display: flex;
+  flex-direction: column;
+  animation: rotateWords 11s ease-in-out infinite;
+}
+
+.vision-rotating span {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--acc);
+  letter-spacing: .01em;
+  line-height: 1.4;
+  height: 1.4em;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* 5 items (4 + clone du 1er) - chaque step = 100/5 = 20%
+   On s'arrête sur chaque mot, puis on glisse vers le suivant.
+   À la fin on arrive sur le clone du mot 1 → boucle imperceptible */
+@keyframes rotateWords {
+  0%    { transform: translateY(0) }
+  15%   { transform: translateY(0) }
+  20%   { transform: translateY(-20%) }
+  35%   { transform: translateY(-20%) }
+  40%   { transform: translateY(-40%) }
+  55%   { transform: translateY(-40%) }
+  60%   { transform: translateY(-60%) }
+  75%   { transform: translateY(-60%) }
+  80%   { transform: translateY(-80%) }
+  95%   { transform: translateY(-80%) }
+  100%  { transform: translateY(-80%) }
+}
+
+.vision-sub {
+  font-size: 7.5px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--light);
+  margin-top: 10px;
+  display: block;
+}
+
+/* ── EXPÉRIENCES ── */
+.exp-list { display:flex; flex-direction:column; gap:8px }
+
+.exp-item {
+  padding: 10px 12px;
+  border:1px solid var(--border);
+  background:rgba(242,239,233,.5);
+  position:relative; overflow:hidden;
+  transition:background .35s var(--E), border-color .35s var(--E), transform .3s var(--E);
+  cursor:default;
+}
+.exp-item::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
+  background:var(--acc); transform:scaleY(0); transform-origin:bottom;
+  transition:transform .4s var(--E);
+}
+.exp-item:hover { background:rgba(140,116,88,.05); border-color:rgba(140,116,88,.22); transform:translateX(2px) }
+.exp-item:hover::before { transform:scaleY(1) }
+
+.exp-top { display:flex; justify-content:space-between; align-items:flex-start; gap:6px; margin-bottom:2px }
+.exp-company { font-family:var(--serif); font-weight:500; font-size:13px; color:var(--ink); line-height:1.2 }
+.exp-date { font-size:7px; letter-spacing:.1em; text-transform:uppercase; color:var(--light); white-space:nowrap; flex-shrink:0; margin-top:2px }
+.exp-role { font-size:7px; letter-spacing:.14em; text-transform:uppercase; color:var(--acc); margin-bottom:6px }
+.exp-tasks { list-style:none; display:flex; flex-direction:column; gap:2px }
+.exp-tasks li { font-size:9px; color:var(--mid); line-height:1.5; padding-left:11px; position:relative }
+.exp-tasks li::before { content:'-'; position:absolute; left:0; color:var(--light); font-size:7.5px; top:1px }
+
+.exp-footer { display:flex; justify-content:flex-end; margin-top:7px }
+.btn-projet {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:3px 9px; border:1px solid var(--border);
+  background:transparent; color:var(--mid);
+  font-family:var(--sans); font-size:7px; letter-spacing:.18em;
+  text-transform:uppercase; text-decoration:none;
+  transition:background .3s var(--E), color .3s var(--E), border-color .3s var(--E);
+}
+.btn-projet svg { width:8px; height:8px; stroke:currentColor; fill:none; stroke-width:1.5 }
+.btn-projet:hover { background:var(--ink); color:var(--bg); border-color:var(--ink) }
+
+/* ── TICKER LOGICIELS ── */
+.ticker-wrap {
+  overflow:hidden;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:8px 0;
+}
+.ticker-track {
+  display:flex; width:max-content;
+  animation:tickerScroll 20s linear infinite;
+}
+.ticker-item {
+  display:flex; align-items:center; gap:16px;
+  padding:0 16px;
+  font-size:8px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--mid); white-space:nowrap; flex-shrink:0;
+}
+.ticker-dot { width:3px; height:3px; border-radius:50%; background:var(--acc); flex-shrink:0 }
+.ticker-acc { color:var(--acc) }
+@keyframes tickerScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ── CE QUE JE RECHERCHE ── */
+.recherche-block {
+  padding:10px 12px;
+  background:rgba(140,116,88,.06);
+  border:1px solid rgba(140,116,88,.18);
+}
+.recherche-text { font-size:9.5px; color:var(--mid); line-height:1.7 }
+.recherche-text strong {
+  display:block; font-family:var(--serif); font-size:13px;
+  font-weight:400; color:var(--ink); margin-bottom:4px;
+}
+
+/* ── TIMELINE ── */
+.timeline { position:relative; padding-left:17px; display:flex; flex-direction:column }
+.timeline::before { content:''; position:absolute; left:4px; top:7px; bottom:7px; width:1px; background:var(--border) }
+.tl-item { position:relative; padding-bottom:11px }
+.tl-item:last-child { padding-bottom:0 }
+.tl-dot {
+  position:absolute; left:-14px; top:6px;
+  width:6px; height:6px; border-radius:50%;
+  border:1.5px solid var(--acc); background:var(--bg);
+  transition:background .3s var(--E), transform .3s var(--E);
+}
+.tl-item:hover .tl-dot { background:var(--acc); transform:scale(1.2) }
+.tl-year { font-size:7.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--acc); margin-bottom:1px }
+.tl-school { font-family:var(--serif); font-size:12px; color:var(--ink); font-weight:400; line-height:1.2 }
+.tl-diploma { font-size:8.5px; color:var(--mid); margin-top:1px; line-height:1.4 }
+
+/* ── QUALITÉS ── */
+.soft-list { display:flex; flex-direction:column; gap:4px }
+.soft-item { font-size:9px; color:var(--mid); padding-left:10px; position:relative; line-height:1.4 }
+.soft-item::before { content:''; position:absolute; left:0; top:6px; width:4px; height:1px; background:var(--acc) }
+
+/* ── CONTACT ── */
+.contact-list { display:flex; flex-direction:column; gap:5px }
+.contact-item { display:flex; align-items:flex-start; gap:7px; font-size:8px; color:var(--mid); line-height:1.4 }
+.contact-item svg { width:9px; height:9px; stroke:var(--acc); fill:none; stroke-width:1.5; flex-shrink:0; margin-top:1px }
+.contact-item a { color:var(--mid); text-decoration:none; border-bottom:1px solid transparent; transition:color .3s,border-color .3s }
+.contact-item a:hover { color:var(--acc); border-color:var(--acc) }
+
+/* ── BOUTONS PDF ── */
+.btn-dl-label {
+  display:inline-flex; align-items:center; gap:6px;
+  margin-top:9px; padding:7px 12px;
+  border:1px solid var(--ink); background:transparent;
+  color:var(--ink); font-family:var(--sans);
+  font-size:7.5px; letter-spacing:.2em; text-transform:uppercase;
+  cursor:pointer; width:100%; justify-content:center;
+  transition:background .3s var(--E), color .3s var(--E);
+  text-decoration: none;
+  color: inherit;
+}
+.btn-dl-label:hover { 
+  background:var(--ink); 
+  color:var(--bg);
+  text-decoration: none;
+}
+.btn-dl-label svg { width:9px; height:9px; stroke:currentColor; fill:none; stroke-width:1.5 }
+#pdf-input { display:none }
+
+/* ══════════════════════════════════════
+   PRINT
+══════════════════════════════════════ */
+@media print {
+  @page { size:A4 portrait; margin:0 }
+  html,body { margin:0; padding:0; background:white; -webkit-print-color-adjust:exact; print-color-adjust:exact }
+  body { display:block }
+  .cv-page { width:210mm; height:auto; box-shadow:none; }
+  .rv { opacity:1 !important; transform:none !important }
+  .ticker-track { animation:none !important; transform:none !important }
+  .btn-dl-label, .photo-change-hint { display:none !important }
+}
+
+</style>
+</head>
+<body>
+
+<div class="cv-page">
+
+  <!-- ══ HEADER ══ -->
+  <header class="cv-header rv">
+    <div>
+  
+      <h1 class="cv-name">Yuna<em>Bernard</em></h1>
+      <p class="cv-subtitle">Designer &amp; Architecte d'intérieur</p>
+    </div>
+    <p class="cv-accroche">
+      Étudiante en architecture d’intérieur, j’aborde chaque projet comme un équilibre entre esthétique, fonctionnalité et expérience, avec une attention particulière portée à la lumière, aux matières et aux usages.
+  </header>
+
+  <!-- ══ MAIN ══ -->
+  <main class="cv-main">
+
+    <section class="rv d1">
+      <div class="section-label">Profil</div>
+      <p class="profil-text">
+        Attirée par les espaces depuis toujours, je développe une approche sensible où esthétique, usage et ambiance trouvent leur équilibre. J’accorde une attention particulière à la lumière, aux matières et à la manière dont un espace est vécu. Mes expériences en stage m’ont permis de confronter cette sensibilité à des projets concrets, du relevé à la conception.
+      </p>
+    </section>
+
+    <div class="vision-block rv d2">
+      <div class="vision-deco">°</div>
+      <p class="vision-static">
+        Concevoir un espace, c'est
+      </p>
+      <div class="vision-rotating-wrap">
+        <div class="vision-rotating">
+          <span>révéler une ambiance.</span>
+          <span>jouer avec la lumière.</span>
+          <span>travailler la matière.</span>
+          <span>penser les usages.</span>
+          <span>révéler une ambiance.</span><!-- clone du 1er pour boucle sans coupure -->
+        </div>
+      </div>
+      <span class="vision-sub"></span>
+    </div>
+
+    <section class="rv d2">
+      <div class="section-label">Expériences</div>
+      <div class="exp-list">
+
+        <div class="exp-item rv d3">
+          <div class="exp-top">
+            <span class="exp-company">Nidding Design</span>
+            <span class="exp-date">Mai - Juil. 2025</span>
+          </div>
+          <div class="exp-role">Stage · Conception &amp; Design</div>
+          <ul class="exp-tasks">
+            <li>Conception de plans et élévations sur Archicad, modélisation 3D</li>
+            <li>Mise en page graphique et élaboration de fiches budgétaires</li>
+            <li>Participation aux visites de chantier et relevés techniques</li>
+            <li>Contribution aux rendez-vous clients et sélection de matériaux</li>
+          </ul>
+          <div class="exp-footer">
+            <a class="btn-projet" href="cave-a-vin.html">
+              Voir le projet
+              <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="exp-item rv d4">
+          <div class="exp-top">
+            <span class="exp-company">Renov'38</span>
+            <span class="exp-date">Juin - Juil. 2024</span>
+          </div>
+          <div class="exp-role">Stage · Aménagement &amp; Chantier</div>
+          <ul class="exp-tasks">
+            <li>Réalisation de plans d'aménagement et propositions créatives</li>
+            <li>Participation aux visites de chantier et suivi des travaux</li>
+            <li>Relevés de mesures et mise en plan des espaces existants</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="rv d5">
+      <div class="section-label">Logiciels</div>
+      <div class="ticker-wrap">
+        <div class="ticker-track" id="tickerTrack">
+          <div class="ticker-item">
+            <span class="ticker-acc">Archicad</span><span class="ticker-dot"></span>
+            <span>SketchUp</span><span class="ticker-dot"></span>
+            <span class="ticker-acc">Twinmotion</span><span class="ticker-dot"></span>
+            <span>Illustrator</span><span class="ticker-dot"></span>
+            <span class="ticker-acc">Rayon Design</span><span class="ticker-dot"></span>
+            <span>InDesign</span><span class="ticker-dot"></span>
+            <span class="ticker-acc">Excel</span><span class="ticker-dot"></span>
+          </div>
+          <div class="ticker-item">
+            <span class="ticker-acc">Archicad</span><span class="ticker-dot"></span>
+            <span>SketchUp</span><span class="ticker-dot"></span>
+            <span class="ticker-acc">Twinmotion</span><span class="ticker-dot"></span>
+            <span>Illustrator</span><span class="ticker-dot"></span>
+            <span class="ticker-acc">Rayon Design</span><span class="ticker-dot"></span>
+            <span>InDesign</span><span class="ticker-dot"></span>
+            <span class="ticker-acc">Excel</span><span class="ticker-dot"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rv d6">
+      <div class="section-label">Ce que je recherche</div>
+      <div class="recherche-block">
+        <p class="recherche-text">
+          <strong>En recherche d’alternance  - 4 ans si possible (2026-2030)</strong>
+          Intégrer une alternance représente pour moi l’opportunité de participer activement à des projets concrets, de la conception à la mise en œuvre.
+Je souhaite y développer mes compétences techniques et créatives, tout en m’inscrivant dans une collaboration durable au sein d’une agence.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="cv-footer rv">
+    <!-- Initiales YB + ligne comme sur le portfolio -->
+    <div class="cv-footer-initials">
+      <span class="initials-letters">YB</span>
+    </div>
+    <span class="cv-footer-year"></span>
+  </footer>
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="cv-sidebar">
+
+    <div class="cv-photo rv" id="cvPhoto">
+      <div class="photo-frame">
+        <img src="images\cv interactif\Portrait.png" alt="Yuna Bernard">
+      </div>
+    </div>
+
+    <div class="cv-sidebar-content">
+
+      <!-- Contact -->
+      <section class="rv d1">
+        <div class="section-label">Contact</div>
+        <div class="contact-list">
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>07 83 68 31 51</span>
+          </div>
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <a href="mailto:Yuna.bernard42@gmail.com">Yuna.bernard42@gmail.com</a>
+          </div>
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>76116 Martainville-Épreville</span>
+          </div>
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <a href="https://yunabernard.fr" target="_blank">yunabernard.fr</a>
+          </div>
+        </div>
+
+        <!-- Bouton : importer son propre PDF 
+        
+<a href="assets\CV_Yuna_Bernard.pdf" target="_blank" rel="noopener noreferrer" download="CV_Yuna_Bernard.pdf"></a>-->
+
+        <a href="assets/CV_Yuna_Bernard.pdf"
+           class="btn-dl-label"
+           download="CV_Yuna_Bernard.pdf"
+           target="_blank"
+           rel="noopener noreferrer">
+
+          <svg viewBox="0 0 24 24">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        
+          Télécharger PDF
+        </a>
+      </section>
+
+      <!-- Formation -->
+      <section class="rv d2">
+        <div class="section-label">Formation</div>
+        <div class="timeline">
+          <div class="tl-item rv d2">
+            <div class="tl-dot"></div>
+            <div class="tl-year">Prévision 2026–2030</div>
+            <div class="tl-school">MJM Paris</div>
+            <div class="tl-diploma">Bachelor &amp; Master<br>Design d'espace</div>
+          </div>
+          <div class="tl-item rv d3">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2023 - 2025</div>
+            <div class="tl-school">ESDAC Lyon</div>
+            <div class="tl-diploma">Bac+2 · Architecture<br>d'intérieur</div>
+          </div>
+          <div class="tl-item rv d4">
+            <div class="tl-dot"></div>
+            <div class="tl-year">2021</div>
+            <div class="tl-school">Baccalauréat STMG</div>
+            <div class="tl-diploma">Obtenu</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Qualités -->
+      <section class="rv d3">
+        <div class="section-label">Qualités</div>
+        <div class="soft-list">
+          <div class="soft-item">Créativité &amp; sens esthétique</div>
+          <div class="soft-item">Organisation &amp; autonomie</div>
+          <div class="soft-item">Rigueur &amp; sens du détail</div>
+          <div class="soft-item">Esprit d'équipe &amp; communication</div>
+          <div class="soft-item">Curiosité &amp; volonté d'apprendre</div>
+        </div>
+      </section>
+
+    </div>
+  </aside>
+
+</div>
+
+<script>
+'use strict';
+
+/* ── REVEAL AU SCROLL ── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('on');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.04, rootMargin: '0px 0px -4px 0px' });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+/* ── ANIMATION TICKER - démarre avec fondu après load ── */
+(function() {
+  const track = document.getElementById('tickerTrack');
+  if (!track) return;
+  // Reset : pas d'animation au départ
+  track.style.opacity = '0';
+  track.style.animation = 'none';
+  // Après 1s (après pageIn), fondu + défilement
+  setTimeout(() => {
+    track.style.transition = 'opacity .6s ease';
+    track.style.opacity = '1';
+    setTimeout(() => {
+      track.style.transition = '';
+      track.style.animation = 'tickerScroll 20s linear infinite';
+    }, 600);
+  }, 900);
+})();
+
+/* ── SECTION LABELS - ligne qui s'étire à l'apparition ── */
+// Déclenché automatiquement par .rv.on via CSS
+
+/* ── SYNC PHOTO HEIGHT = HEADER HEIGHT ── */
+function syncPhotoHeight() {
+  const header = document.querySelector('.cv-header');
+  const photo  = document.getElementById('cvPhoto');
+  if (header && photo) photo.style.height = header.offsetHeight + 'px';
+}
+syncPhotoHeight();
+window.addEventListener('resize', syncPhotoHeight);
+document.fonts.ready.then(syncPhotoHeight);
+
+/* ── PDF IMPORT & TÉLÉCHARGEMENT ──
+   L'utilisateur importe son propre PDF,
+   le navigateur le télécharge aussitôt. */
+document.getElementById('pdf-input').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file || file.type !== 'application/pdf') return;
+
+  // Crée un lien de téléchargement temporaire
+  const url = URL.createObjectURL(file);
+  const a   = document.createElement('a');
+  a.href     = url;
+  a.download = file.name || 'CV-Yuna-Bernard.pdf';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  // Libère la mémoire
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+
+  // Remet l'input à zéro pour permettre de re-sélectionner le même fichier
+  this.value = '';
+});
+</script>
+</body>
+</html>

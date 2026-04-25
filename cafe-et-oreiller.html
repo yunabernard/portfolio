@@ -45,23 +45,25 @@
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 200;
-    background: var(--blanc);
-    border-bottom: 1px solid var(--trait);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(249,247,243,.95);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(42,37,32,.06);
+    transition: padding .4s cubic-bezier(.16,1,.3,1);
   }
 
-  .nav-inner {
-    width: 100%;
-    padding: 28px var(--padding-h);
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+  .nav-logo {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.1rem; font-weight: 400;
+    color: var(--noir); letter-spacing: .01em;
+    text-decoration: none;
   }
+  .nav-logo em { font-style: italic; color: var(--brun); }
 
-  .nav-brand .name { font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--noir); font-weight:400; }
-  .nav-brand .sub  { font-size:.6rem; letter-spacing:.15em; text-transform:uppercase; color:var(--brun); margin-top:2px; }
-  .nav-links { display:flex; gap:44px; list-style:none; padding-top:4px; }
-  .nav-links a { font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--brun); text-decoration:none; transition:color .3s; }
-  .nav-links a:hover { color:var(--brun); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; color: var(--beige); text-decoration: none; transition: color .3s; }
+  .nav-links a:hover { color: var(--noir); }
 
   /* ——— HERO ——— */
   .hero {
@@ -398,16 +400,11 @@
      NAV
 ============================== -->
 <nav>
-  <div class="nav-inner">
-    <a class="nav-brand" href="index.html" style="text-decoration:none;">
-      <div class="name">Yuna Bernard</div>
-      <div class="sub">Architecture &amp; Design</div>
-    </a>
-    <ul class="nav-links">
-      <li><a href="index.html">Projets</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </div>
+  <a class="nav-logo" href="index.html">Yuna <em>Bernard</em></a>
+  <ul class="nav-links">
+    <li><a href="index.html#projets">Projets</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
 </nav>
 
 <!-- HERO -->
